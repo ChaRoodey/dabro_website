@@ -4,9 +4,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import require_auth
 from app.core.config import settings
+from app.core.logging import get_logger
 from app.core.security import security
 from app.core.session import create_session, delete_session
-from app.db.session import get_db_session
+from app.db.session import get_db_session, get_transactional_session
 from app.models.session_model import SessionModel
 from app.models.user_model import UserModel
 from app.schemas.admin import LoginSchema
@@ -15,6 +16,7 @@ router = APIRouter(
     prefix="/auth",
     tags=["Authentication"],
 )
+logger = get_logger(__name__)
 
 
 def _set_session_cookie(response: Response, token: str):
@@ -33,15 +35,22 @@ def _set_session_cookie(response: Response, token: str):
 async def login(
         data: LoginSchema,
         response: Response,
-        session: AsyncSession = Depends(get_db_session)
+        session: AsyncSession = Depends(get_transactional_session)
 ):
-    res = await session.execute(select(UserModel).filter_by(username=data.username))
-    user = res.scalars().one_or_none()
+    logger.info("Login attempt username=%s", data.username)
+    try:
+        res = await session.execute(select(UserModel).filter_by(username=data.username))
+        user = res.scalars().one_or_none()
+    except Exception:
+        logger.exception("Login failed: DB error username=%s", data.username)
+        raise
 
     if not user:
+        logger.warning("Login failed: user not found username=%s", data.username)
         raise HTTPException(status_code=401, detail="User not found")
 
     if not security.verify_password(data.password, user.password_hash):
+        logger.warning("Login failed: wrong password username=%s", data.username)
         raise HTTPException(status_code=401, detail="Wrong Password")
 
     session_obj = await create_session(user.user_id, session)
@@ -55,7 +64,7 @@ async def login(
 async def logout(
         request: Request,
         response: Response,
-        session: AsyncSession = Depends(get_db_session)
+        session: AsyncSession = Depends(get_transactional_session)
 ):
     session_id = request.cookies.get(settings.SESSION_COOKIE_NAME)
     if session_id:
@@ -69,16 +78,15 @@ async def logout(
 
 
 @router.get("/check")
-async def check_login(user_id: int = Depends(require_auth)) -> dict:
+async def check_login(_=Depends(require_auth)) -> dict:
     return {"success": True}
 
 
 @router.post("/registration")
 async def registration(
         data: LoginSchema,
-        session: AsyncSession = Depends(get_db_session)
+        session: AsyncSession = Depends(get_transactional_session)
 ) -> dict:
     new_user = UserModel(username=data.username, password_hash=security.hash_password(data.password))
     session.add(new_user)
-    await session.commit()
     return {"success": True}

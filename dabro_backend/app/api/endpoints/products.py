@@ -5,7 +5,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.session import get_db_session
 from app.models.product_model import ProductModel
 from app.schemas.filters import FiltersSchema, filters_query
-from app.schemas.product import ProductAddSchema
 
 router = APIRouter(
     prefix="/products",

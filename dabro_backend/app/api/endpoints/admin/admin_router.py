@@ -7,7 +7,7 @@ from app.api.endpoints.admin.auth import router as auth_router
 
 router = APIRouter(
     prefix="/admin",
-    # dependencies=[Depends(require_auth)]
+    dependencies=[Depends(require_auth)]
 )
 
 router.include_router(staff_edit_router)
