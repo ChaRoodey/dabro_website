@@ -1,0 +1,97 @@
+<script setup>
+const props = defineProps({
+    staffInfo: {
+        type: Object,
+        required: true
+    }
+})
+</script>
+
+<template>
+    <div class="staff-img-wrapper">
+        <img :src="`http://localhost:8000/static/staff/${props.staffInfo?.img_id}.webp`"
+             alt="name photo">
+        <div class="overlay">
+            <p>{{ props.staffInfo?.description }}</p>
+        </div>
+    </div>
+    <h2>{{ props.staffInfo?.name }}</h2>
+    <h3>{{ props.staffInfo?.grade }}</h3>
+    <a href="https://b921434.yclients.com/company/857497/select-master?o=s12564603">Записаться</a>
+</template>
+
+<style scoped>
+.staff-img-wrapper {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(20%);
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    padding: 30px;
+}
+
+.staff-img-wrapper img {
+    transition: opacity 0.5s ease-in-out;
+    filter: grayscale(100%);
+}
+
+.staff-img-wrapper:hover img {
+    opacity: 0.4;
+}
+
+.staff-img-wrapper:hover .overlay {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.overlay p {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.staff-item h2 {
+    font-family: var(--font-family-base), Arial, sans-serif;
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 20px 0;
+}
+
+.staff-item h3 {
+    font-family: var(--font-family-base), Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    margin: 20px 0;
+    text-transform: capitalize;
+}
+
+.staff-item a {
+    text-transform: none;
+    margin: 30px 0;
+    width: 200px;
+    height: 50px;
+    padding-inline: 50px;
+    background-color: var(--color-gold);
+    color: var(--color-black);
+    font-family: var(--font-family-base), Arial, sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: var(--border-radius);
+    box-shadow: 0 0 5px rgba(236, 223, 165, 0.8);
+}
+</style>

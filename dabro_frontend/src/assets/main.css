@@ -1,0 +1,177 @@
+@import './base.css';
+
+:root{
+    --color-black: #000300;
+    --color-light-gold: #ECDFA5;
+    --color-gold: #E9D478;
+    --color-gold-hover: #D7BD68;
+    --color-light-black: #111111;
+    --color-gold-socials: #EDDFA6;
+
+    --border-radius: 4px;
+    --border: 1px solid var(--color-light-gold);
+    --border-hover: 1px solid var(--color-gold-hover);
+
+    --font-family-base: 'NotoSans', sans-serif;
+    --font-family-accent: 'Brygada1918', sans-serif;
+
+    --conteiner-width: 1300px;
+    --conteiner-padding-x: 15px;
+
+    --transition-duratin: 0.2s;
+}
+
+body{
+    font-family: var(--font-family-base), sans-serif;
+    font-size: 16px;
+    color: var(--color-light-gold);
+    background-color: var(--color-black);
+}
+
+.appointment-btn{
+    display: inline-flex;
+    align-items: center;
+    height: 55px;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 2;
+    letter-spacing: 1.55px;
+    padding-inline: 26px;
+    border: var(--border);
+    border-radius: var(--border-radius);
+    background-color: transparent;
+    color: var(--color-light-gold);
+}
+
+.phone-number{
+    display: inline-flex;
+    align-items: center;
+    height: 55px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 2;
+    letter-spacing: 1px;
+    padding-inline: 26px;
+}
+
+.appointment-btn:hover{
+    border: var(--border-hover);
+}
+
+
+@media (max-width: 1280px) {
+    .header{
+        flex-wrap: wrap;
+        row-gap: 10px;
+        padding-top: 20px;
+        padding-inline: 15px;
+    }
+
+    .header-menu{
+        order: 1;
+        flex-basis: 100%;
+    }
+
+    .header-menu-link{
+        height: 50px;
+    }
+
+    .phone-number{
+        padding-inline: 15px;
+    }
+
+    .banner {
+        padding: 50px 16px;
+    }
+
+    .about {
+        padding: 50px 16px;
+    }
+
+    .about-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .about-carousel {
+        order: 1;
+    }
+
+}
+
+@media (max-width: 1000px) {
+    .banner {
+        padding: 40px 16px;
+    }
+
+    .banner-inner {
+        flex-direction: column;
+    }
+
+    .banner-body {
+        text-align: center;
+    }
+
+    .banner-button.desktop {
+        display: none;
+    }
+
+    .banner-button.mobile {
+        display: flex;
+    }
+}
+
+@media (max-width: 680px) {
+    .header-logo{
+        padding-left: 25px;
+    }
+
+    .header-menu{
+        display: none;
+    }
+
+    .appointment{
+        display: none;
+    }
+
+    .appointment-btn {
+        display: none;
+    }
+
+    .header-burger-button{
+        display: inline-flex;
+    }
+
+    .header-line{
+        top: 90px;
+    }
+
+    .banner {
+        padding: 20px 12px;
+    }
+
+    .banner-button.mobile {
+        margin-top: 20px;
+        height: 50px;
+        padding-inline: 45px;
+        font-size: 16px;
+    }
+
+    .about-qualities-item {
+        flex-direction: column;
+    }
+
+    .about-qualities-title {
+        margin-bottom: 10px;
+    }
+
+    .values {
+        padding: 50px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .phone-number {
+        display: none;
+    }
+}
