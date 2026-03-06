@@ -12,4 +12,4 @@ router = APIRouter(
 
 router.include_router(staff_edit_router)
 router.include_router(products_edit_router)
-router.include_router(auth_router)
+# router.include_router(auth_router)

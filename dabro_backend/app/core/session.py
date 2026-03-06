@@ -20,6 +20,7 @@ async def create_session(user_id: int, session: AsyncSession) -> SessionModel:
     )
 
     session.add(session_obj)
+    await session.flush()
     await session.refresh(session_obj)
 
     return session_obj

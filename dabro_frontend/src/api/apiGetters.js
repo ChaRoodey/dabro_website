@@ -48,9 +48,9 @@ export function apiDeleteStaff(data) {
 }
 
 export function loginAdmin(loginData) {
-    return fastApi.post('/admin/auth/login', loginData)
+    return fastApi.post('/auth/login', loginData)
 }
 
 export function checkLoginAdmin() {
-    return fastApi.get('/admin/auth/check')
+    return fastApi.get('/auth/check')
 }
