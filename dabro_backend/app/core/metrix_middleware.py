@@ -49,11 +49,11 @@ current_day = get_stats_day(datetime.now(timezone.utc))
 
 def flush_daily_stats(stats_day: str) -> None:
     logger.info(
-        "daily_unique_visitors stats_day=%s all=%s products=%s staff=%s",
+        "daily_unique_visitors stats_day=%s all=%s main=%s shop=%s",
         stats_day,
         len(all_visitors),
-        len(shop_visitors),
         len(index_visitors),
+        len(shop_visitors),
     )
 
 
@@ -63,14 +63,14 @@ def reset_daily_sets() -> None:
     index_visitors.clear()
 
     UNIQUE_VISITORS_CURRENT_DAY.labels(scope="all").set(0)
-    UNIQUE_VISITORS_CURRENT_DAY.labels(scope="products").set(0)
-    UNIQUE_VISITORS_CURRENT_DAY.labels(scope="staff").set(0)
+    UNIQUE_VISITORS_CURRENT_DAY.labels(scope="main").set(0)
+    UNIQUE_VISITORS_CURRENT_DAY.labels(scope="shop").set(0)
 
 
 def update_unique_visitor_metrics() -> None:
     UNIQUE_VISITORS_CURRENT_DAY.labels(scope="all").set(len(all_visitors))
-    UNIQUE_VISITORS_CURRENT_DAY.labels(scope="products").set(len(shop_visitors))
-    UNIQUE_VISITORS_CURRENT_DAY.labels(scope="staff").set(len(index_visitors))
+    UNIQUE_VISITORS_CURRENT_DAY.labels(scope="main").set(len(shop_visitors))
+    UNIQUE_VISITORS_CURRENT_DAY.labels(scope="shop").set(len(index_visitors))
 
 
 async def metrics_and_visitors_middleware(request: Request, call_next) -> Response:
