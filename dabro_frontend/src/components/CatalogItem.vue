@@ -10,7 +10,7 @@ const props = defineProps({
 
 const emit = defineEmits(["select"])
 const backgroundStyle = computed(() => ({
-    "--bg-image": `url(http://localhost:8000/static/products/original/${props.productInfo.img_id}.webp)`
+    "--bg-image": `url(${props.productInfo.img_url})`
 }))
 
 function openModal() {

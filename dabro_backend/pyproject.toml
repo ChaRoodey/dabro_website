@@ -5,11 +5,13 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "aiobotocore>=3.2.1",
     "alembic>=1.18.4",
     "asyncpg>=0.31.0",
     "bcrypt>=5.0.0",
     "fastapi>=0.129.0",
     "openpyxl>=3.1.5",
+    "pillow>=12.1.1",
     "prometheus-fastapi-instrumentator>=7.1.0",
     "pydantic>=2.12.5",
     "pydantic-settings>=2.12.0",

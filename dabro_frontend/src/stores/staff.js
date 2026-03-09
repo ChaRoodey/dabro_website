@@ -1,15 +1,16 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
 import {apiAddStaff, apiDeleteStaff, apiChangeStaff, fetchAllStaff} from "@/api/apiGetters.js";
+import {usePhotosStore} from "@/stores/photos.js";
 
-const PATCH_FIELDS = ["name", "grade", "description", "img_id"];
+const PATCH_FIELDS = ["name", "grade", "description", "img_url"];
 
 function toAddPayload(m) {
     return {
         name: m.name,
         grade: m.grade,
         description: m.description,
-        img_id: m.img_id,
+        img_url: m.img_url,
     };
 }
 
@@ -32,6 +33,8 @@ export const useStaffStore = defineStore('staff', () => {
     const uploadingStaff = ref(false)
     const staffSnapshot = ref(new Map())
 
+    const photosStore = usePhotosStore();
+
     async function loadStaff() {
         loadingStaff.value = true;
         try {
@@ -44,7 +47,7 @@ export const useStaffStore = defineStore('staff', () => {
                     name: item.name ?? "",
                     grade: item.grade ?? "",
                     description: item.description ?? "",
-                    img_id: item.img_id ?? null,
+                    img_url: item.img_url ?? null,
                 })
             }
             staffSnapshot.value = map;
@@ -59,6 +62,22 @@ export const useStaffStore = defineStore('staff', () => {
         uploadingStaff.value = true
 
         try {
+            console.log('in staff upload');
+            const updatedPhotos = await photosStore.uploadPhotos('staff')
+            console.log('in staff upload');
+            if (!updatedPhotos) return;
+
+            const updatedPhotosMap = new Map(
+                updatedPhotos.map(item => [item.id, item.img_url])
+            )
+
+            allStaff.value.forEach(product => {
+                const newUrl = updatedPhotosMap.get(product.id)
+                if (newUrl) {
+                    product.img_url = newUrl
+                }
+            })
+
             const newItems = [];
             const changedItems = [];
 

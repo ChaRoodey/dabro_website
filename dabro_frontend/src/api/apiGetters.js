@@ -26,9 +26,13 @@ export function apiDeleteProduct(data) {
 }
 
 export function apiUploadProductsExcel(form) {
-    return fastApi.post('/admin/products/import', form, {
+    return fastApi.post('/admin/products/upload-excel', form, {
         headers: {"Content-Type": "multipart/form-data"},
     })
+}
+
+export function apiUploadProductsPhotos(data) {
+    return fastApi.post('/admin/products/upload-photos', data)
 }
 
 export function fetchAllStaff() {

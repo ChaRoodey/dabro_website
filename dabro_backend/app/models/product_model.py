@@ -13,5 +13,5 @@ class ProductModel(Base):
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     cost: Mapped[int] = mapped_column(Integer, nullable=False)
     size: Mapped[str] = mapped_column(String, nullable=False)
-    img_id: Mapped[str] = mapped_column(Text, nullable=False)
+    img_url: Mapped[str] = mapped_column(Text, nullable=True)
     items_left: Mapped[int] = mapped_column(Integer, nullable=False)

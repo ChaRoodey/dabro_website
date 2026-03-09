@@ -12,6 +12,7 @@ wheels/
 
 #Env
 **/.env
+**/.env-dev
 
 # Frontend
 # Logs

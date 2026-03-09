@@ -2,6 +2,8 @@
 import {useProductsStore} from "@/stores/products.js";
 
 const productStore = useProductsStore()
+
+
 </script>
 
 <template>

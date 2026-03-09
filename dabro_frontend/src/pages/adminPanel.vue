@@ -1,11 +1,56 @@
 <script setup>
+import {onMounted, ref} from "vue";
 import {useStaffStore} from "@/stores/staff.js";
-import {onMounted} from "vue";
+import {usePhotosStore} from "@/stores/photos.js";
 import {useProductsStore} from "@/stores/products.js";
 import Header from "@/components/Header.vue";
+import PhotoModal from "@/components/PhotoModal.vue";
+import {startLenis, stopLenis} from "@/plugins/lenis.js";
 
 const staffStore = useStaffStore()
 const productStore = useProductsStore()
+const photosStore = usePhotosStore()
+
+const isModalOpen = ref(false);
+const selectedPhoto = ref(null);
+const objectId = ref(null);
+const instance = ref(null);
+
+function handleSelect(object, inst) {
+    selectedPhoto.value = object.img_url
+    objectId.value = object.product_id || object.staff_id
+    instance.value = inst
+    isModalOpen.value = true;
+
+    stopLenis()
+    document.body.style.overflow = "hidden"
+}
+
+function handleClose() {
+    isModalOpen.value = false;
+    selectedPhoto.value = null
+    objectId.value = null
+    instance.value = null
+
+    startLenis()
+    document.body.style.overflow = ""
+}
+
+function handleApply(payload) {
+    if (payload.instance === 'product') {
+        const product = productStore.allProducts.find(product => product.product_id === payload.id)
+        if (product) {
+            product.img_url = payload.img_url
+        }
+        photosStore.addNewPhoto(payload)
+    } else if (payload.instance === 'staff') {
+        const staff = staffStore.allStaff.find(staff => staff.staff_id === payload.id)
+        if (staff) {
+            staff.img_url = payload.img_url
+        }
+        photosStore.addNewPhoto(payload)
+    }
+}
 
 function addStaffRow() {
     staffStore.allStaff.push({
@@ -13,7 +58,7 @@ function addStaffRow() {
         name: "",
         grade: "",
         description: "",
-        img_id: null,
+        img_url: null,
     })
 }
 
@@ -24,7 +69,7 @@ function addProductRow() {
         description: "",
         size: "",
         category: "",
-        img_id: "",
+        img_url: "",
         excel_product_id: null,
         cost: null,
         items_left: null,
@@ -112,7 +157,7 @@ onMounted(() => {
 
                 <div class="staff-actions">
                     <button
-                            class="btn"
+                            class="base-black-btn btn"
                             @click="staffStore.uploadStaff"
                             :disabled="staffStore.uploadingStaff"
                     >
@@ -120,14 +165,14 @@ onMounted(() => {
                     </button>
 
                     <button
-                            class="btn btn--secondary"
+                            class="btn base-black-btn"
                             @click="staffStore.loadStaff"
                             :disabled="staffStore.loadingStaff"
                     >
                         {{ staffStore.loadingStaff ? "Загрузка..." : "Обновить" }}
                     </button>
 
-                    <button class="btn" @click="addStaffRow">+ Добавить сотрудника</button>
+                    <button class="btn base-black-btn" @click="addStaffRow">+ Добавить сотрудника</button>
                 </div>
             </div>
 
@@ -153,11 +198,14 @@ onMounted(() => {
                         <input class="input" v-model="m.description" placeholder="Описание"/>
                     </div>
                     <div>
-                        <input class="input" v-model="m.img_id" placeholder="-1"/>
+                        <div class="photo-cell" @click="handleSelect(m, 'staff')">
+                            <img v-if="m.img_url" :src="m.img_url" alt="Staff photo" class="photo-thumb btn"/>
+                            <button v-else class="btn-placeholder btn">—</button>
+                        </div>
                     </div>
 
                     <div class="row-actions">
-                        <button class="btn" @click="deleteStaffMember(m.staff_id)">Удалить</button>
+                        <button class="btn base-black-btn" @click="deleteStaffMember(m.staff_id)">Удалить</button>
                     </div>
 
                     <div v-if="m.error" class="error table__error">{{ m.error }}</div>
@@ -172,22 +220,22 @@ onMounted(() => {
 
                 <div class="staff-actions">
                     <button
-                            class="btn"
+                            class="btn base-black-btn"
                             @click="productStore.uploadProducts"
                             :disabled="productStore.productsUploading"
                     >
-                        {{ staffStore.uploadingStaff ? "..." : "Сохранить" }}
+                        {{ productStore.productsUploading ? "Сохранение.." : "Сохранить" }}
                     </button>
 
                     <button
-                            class="btn btn--secondary"
+                            class="btn base-black-btn"
                             @click="productStore.loadProducts"
                             :disabled="productStore.productsLoading"
                     >
                         {{ productStore.productsLoading ? "Загрузка..." : "Обновить" }}
                     </button>
 
-                    <button class="btn" @click="addProductRow">+ Добавить сотрудника</button>
+                    <button class="base-black-btn btn" @click="addProductRow">+ Добавить сотрудника</button>
                 </div>
             </div>
 
@@ -202,7 +250,7 @@ onMounted(() => {
                     <div>Объем</div>
                     <div>Цена</div>
                     <div>Остаток</div>
-                    <div>Фото (url)</div>
+                    <div>Фото</div>
                     <div></div>
                 </div>
 
@@ -229,11 +277,15 @@ onMounted(() => {
                         <input class="input" v-model="p.items_left" placeholder="Остаток"/>
                     </div>
                     <div>
-                        <input class="input" v-model="p.img_id" placeholder="Ссылка на картинку"/>
+                        <div class="photo-cell" @click="handleSelect(p, 'product')">
+                            <img v-if="p.img_url" :src="p.img_url" alt="Product photo" class="photo-thumb btn"/>
+                            <button v-else class="btn-placeholder btn">—</button>
+                        </div>
                     </div>
 
                     <div class="row-actions">
-                        <button class="btn" @click="productStore.deleteProduct(p.product_id)">Удалить</button>
+                        <button class="base-black-btn btn" @click="productStore.deleteProduct(p.product_id)">Удалить
+                        </button>
                     </div>
 
                     <!--                    <div v-if="m.error" class="error table__error">{{ m.error }}</div>-->
@@ -255,7 +307,7 @@ onMounted(() => {
                         @change="onPickExcel($event.target.files?.[0] || null)"
                 />
 
-                <button class="btn" :disabled="productStore.excelUploading" @click="uploadExcel">
+                <button class="base-black-btn btn" :disabled="productStore.excelUploading" @click="uploadExcel">
                     {{ productStore.excelUploading ? "Загрузка..." : "Загрузить и обновить" }}
                 </button>
 
@@ -267,6 +319,14 @@ onMounted(() => {
                 </div>
             </div>
         </section>
+        <PhotoModal
+                v-if="isModalOpen"
+                :currPhotoUrl="selectedPhoto"
+                :objectId="objectId"
+                :instance="instance"
+                @apply="handleApply"
+                @close="handleClose"
+        />
     </main>
 </template>
 
@@ -375,7 +435,7 @@ onMounted(() => {
     gap: 8px;
 }
 
-.btn {
+.base-black-btn {
     padding: 8px 18px;
     //border-radius: 2px;
     cursor: pointer;
@@ -404,6 +464,36 @@ onMounted(() => {
 .btn--danger {
     background: #c0392b;
     color: white;
+}
+
+.photo-cell {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.photo-thumb {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #2b2b2b;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.btn-placeholder {
+    width: 44px;
+    height: 44px;
+    border: 1px dashed #444;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: transparent;
 }
 
 .input {
@@ -450,7 +540,7 @@ onMounted(() => {
 }
 
 .table-row-product {
-    grid-template-columns: 0.25fr 0.7fr 1fr 1fr 0.5fr 0.5fr 0.25fr 1fr 110px;
+    grid-template-columns: 0.25fr 0.7fr 1fr 3fr 0.5fr 0.5fr 0.25fr 0.25fr 110px;
 }
 
 @media (max-width: 980px) {

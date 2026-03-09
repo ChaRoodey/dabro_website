@@ -2,7 +2,6 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
-from starlette.staticfiles import StaticFiles
 from prometheus_fastapi_instrumentator import Instrumentator
 
 from app.api.router import router
@@ -12,6 +11,7 @@ from app.core.metrix_middleware import metrics_and_visitors_middleware
 
 setup_logger()
 logger = get_logger("app")
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -24,7 +24,7 @@ app = FastAPI(lifespan=lifespan)
 
 Instrumentator(excluded_handlers=["/metrics"], ).instrument(app).expose(app, endpoint="/metrics")
 app.include_router(router)
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
+# app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 app.middleware("http")(metrics_and_visitors_middleware)
 app.add_middleware(

@@ -10,4 +10,4 @@ class StaffModel(Base):
     name: Mapped[str] = mapped_column(String(40), nullable=False)
     grade: Mapped[str] = mapped_column(String(20), nullable=False)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
-    img_id: Mapped[str] = mapped_column(String, nullable=False)
+    img_url: Mapped[str] = mapped_column(String, nullable=True)

@@ -1,11 +1,10 @@
 from typing import Set
 
-from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file='.env', extra='ignore')
+    model_config = SettingsConfigDict(env_file='.env-dev', extra='ignore')
 
     POSTGRES_HOST: str = 'localhost'
     POSTGRES_PORT: int = 5432
@@ -25,23 +24,18 @@ class Settings(BaseSettings):
 
     CORS_ORIGINS: list[str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
 
+    S3_ACCESS_KEY: str
+    S3_SECRET_KEY: str
+    S3_ENDPOINT_URL: str = "https://s3.ru-1.storage.selcloud.ru"
+    S3_BUCKET_NAME: str = "test-dabro-bucket"
+    S3_VERIFY: str = "/etc/ssl/certs/ca-certificates.crt"
+
     @property
     def database_url(self) -> str:
         return (
             f'postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}'
             f'@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}'
         )
-    #
-    # @field_validator("CORS_ORIGINS", mode="before")
-    # @classmethod
-    # def parse_cors_origins(cls, v):
-    #     if v is None:
-    #         return []
-    #     if isinstance(v, list):
-    #         return v
-    #     if isinstance(v, str):
-    #         return [s.strip() for s in v.split(",") if s.strip()]
-    #     return []
 
 
 settings = Settings()

@@ -42,6 +42,10 @@ async def require_auth(
 
 
 def op_context(op: str):
+    """
+    Sets module name as attribute to request for logging.
+    Logging in get_transactional_session.
+    """
     async def _dep(request: Request):
         request.state.op = op
 

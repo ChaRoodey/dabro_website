@@ -9,7 +9,7 @@ const props = defineProps({
 
 <template>
     <div class="staff-img-wrapper">
-        <img :src="`http://localhost:8000/static/staff/${props.staffInfo?.img_id}.webp`"
+        <img :src="props.staffInfo?.img_url"
              alt="name photo">
         <div class="overlay">
             <p>{{ props.staffInfo?.description }}</p>

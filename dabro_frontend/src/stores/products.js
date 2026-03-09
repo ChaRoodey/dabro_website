@@ -10,13 +10,14 @@ import {
     fetchFilteredData
 } from "@/api/apiGetters.js";
 import {startLenis, stopLenis} from "@/plugins/lenis.js";
+import {usePhotosStore} from "@/stores/photos.js";
 
 const PRODUCT_PATCH_FIELDS = [
     "brand",
     "description",
     "size",
     "category",
-    "img_id",
+    "img_url",
     "excel_product_id",
     "cost",
     "items_left"
@@ -28,7 +29,7 @@ function toAddProductPayload(p) {
         description: p.description,
         size: p.size,
         category: p.category,
-        img_id: p.img_id,
+        img_url: p.img_url,
         excel_product_id: p.excel_product_id,
         cost: p.cost,
         items_left: p.items_left,
@@ -57,13 +58,18 @@ export const useProductsStore = defineStore('products', () => {
     const productsUploading = ref(false)
     const filtersLoading = ref(false)
     const error = ref(null)
+
     const validationErrors = ref({})
     const sidebarOpen = ref(false)
+
     const excelError = ref('')
     const excelFile = ref(null)
     const excelUploading = ref(false)
     const excelResults = ref(null)
+
     const productsSnapshot = ref(new Map())
+
+    const photosStore = usePhotosStore();
 
     function openSidebar() {
         sidebarOpen.value = true
@@ -100,6 +106,7 @@ export const useProductsStore = defineStore('products', () => {
             const res = await fetchAllProducts();
             allProducts.value = res.data;
 
+
             const map = new Map()
             for (const item of res.data) {
                 map.set(item.product_id, {
@@ -107,7 +114,7 @@ export const useProductsStore = defineStore('products', () => {
                     description: item.description ?? "",
                     size: item.size ?? "",
                     category: item.category ?? "",
-                    img_id: item.img_id ?? "",
+                    img_url: item.img_url ?? "",
                     excel_product_id: item.excel_product_id ?? null,
                     cost: item.cost ?? null,
                     items_left: item.items_left ?? null,
@@ -124,7 +131,6 @@ export const useProductsStore = defineStore('products', () => {
         try {
             const res = await fetchAllFilters();
             allFilters.value = res.data;
-            // console.log(allFilters.value);
         } finally {
             filtersLoading.value = false
         }
@@ -133,11 +139,9 @@ export const useProductsStore = defineStore('products', () => {
     const loadFilteredData = async function (filters) {
         validationErrors.value = {}
         productsLoading.value = true
-        // console.log(filters);
         try {
             const res = await fetchFilteredData(filters);
             allProducts.value = res.data;
-            // console.log(allProducts.value);
         } catch (e) {
             if (e.response?.status === 422) {
                 validationErrors.value = e.response.data.detail
@@ -151,6 +155,20 @@ export const useProductsStore = defineStore('products', () => {
         productsUploading.value = true
 
         try {
+            const updatedPhotos = await photosStore.uploadPhotos('product')
+            if (!updatedPhotos) return;
+
+            const updatedPhotosMap = new Map(
+                updatedPhotos.map(item => [item.id, item.img_url])
+            )
+
+            allProducts.value.forEach(product => {
+                const newUrl = updatedPhotosMap.get(product.id)
+                if (newUrl) {
+                    product.img_url = newUrl
+                }
+            })
+
             const newItems = [];
             const changedItems = [];
 

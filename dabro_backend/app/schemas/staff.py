@@ -7,7 +7,7 @@ class StaffAddSchema(BaseModel):
     name: str
     grade: str
     description: str
-    img_id: str # = Field(ge=0)
+    img_url: str # = Field(ge=0)
 
 
 class StaffSchema(StaffAddSchema):
@@ -22,4 +22,4 @@ class StaffPatchSchema(StaffDeleteSchema):
     name: Optional[str] = None
     grade: Optional[str] = None
     description: Optional[str] = None
-    img_id: Optional[str] = None
+    img_url: Optional[str] = None

@@ -10,7 +10,7 @@ class ProductAddSchema(BaseModel):
     description: str
     cost: int = Field(ge=0)
     size: str
-    img_id: str
+    img_url: str
     items_left: int = Field(ge=0)
 
 
@@ -29,5 +29,5 @@ class ProductPatchSchema(ProductDeleteSchema):
     description: Optional[str] = None
     cost: Optional[int] = None
     size: Optional[str] = None
-    img_id: Optional[str] = None
+    img_url: Optional[str] = None
     items_left: Optional[int] = None
