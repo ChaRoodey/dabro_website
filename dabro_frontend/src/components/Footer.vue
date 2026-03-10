@@ -1,6 +1,7 @@
 <script setup>
 import {nextTick, onBeforeUnmount, onMounted} from "vue";
 import {mapDestroy, mapInit} from "@/plugins/yandexMap.js";
+import iconsSprite from '@/assets/icons/icons.svg?raw'
 
 onMounted(async () => {
     await nextTick();
@@ -13,7 +14,8 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-<footer class="footer" id="contacts">
+    <footer class="footer" id="contacts">
+        <div v-html="iconsSprite" style="display: none"/>
         <div class="footer-inner container">
             <div class="footer-title">
                 <h1>контакты</h1>
@@ -38,17 +40,17 @@ onBeforeUnmount(() => {
                     <h4>Социальные сети</h4>
                     <a href="https://vk.com/dabro_sun">
                         <svg width="60" height="60">
-<!--                            <use href="@/assets/icons/icons.svg#icon-vk"></use>-->
+                            <use href="#icon-vk"/>
                         </svg>
                     </a>
                     <a href="https://www.instagram.com/dabro_sun/">
                         <svg width="60" height="60">
-<!--                            <use href="@/assets/icons/icons.svg#icon-instagram"></use>-->
+                            <use href="#icon-instagram"/>
                         </svg>
                     </a>
                     <a href="https://t.me/dabro_sun">
                         <svg width="60" height="60">
-<!--                            <use href="@/assets/icons/icons.svg#icon-telegram"></use>-->
+                            <use href="#icon-telegram"/>
                         </svg>
                     </a>
                 </div>
@@ -58,7 +60,7 @@ onBeforeUnmount(() => {
             </div>
         </div>
         <div class="footer-copyright">
-            <p>© Copyright 2025</p>
+            <p>© Copyright 2025-2026</p>
         </div>
     </footer>
 </template>
@@ -77,7 +79,7 @@ onBeforeUnmount(() => {
     grid-row-gap: 30px;
 }
 
-.footer-title h1{
+.footer-title h1 {
     font-family: var(--font-family-accent), Arial, sans-serif;
     font-size: clamp(24px, 4.56vw, 60px);
     font-weight: 400;
@@ -85,7 +87,7 @@ onBeforeUnmount(() => {
     margin: 0;
 }
 
-.footer-logo img{
+.footer-logo img {
     width: 550px;
 }
 

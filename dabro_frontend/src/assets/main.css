@@ -43,6 +43,22 @@ body{
     color: var(--color-light-gold);
 }
 
+a,
+button {
+    border: 0;
+    transition: 0.3s ease;
+}
+
+a:hover,
+button:hover {
+    transform: scale(1.01) translateY(-5%);
+}
+
+a:active,
+button:active {
+    transform: translateY(1%)
+}
+
 .phone-number{
     display: inline-flex;
     align-items: center;

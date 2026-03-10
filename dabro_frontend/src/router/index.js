@@ -1,6 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import {checkLoginAdmin} from "@/api/apiGetters.js";
-
+import {getLenis} from "@/plugins/lenis.js";
+import {nextTick} from "vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,6 +42,17 @@ router.beforeEach(async (to, from, next) => {
         next()
     }
 
+})
+
+router.afterEach(async () => {
+    await nextTick()
+
+    requestAnimationFrame(() => {
+        const lenis = getLenis()
+        if (lenis) {
+            lenis.scrollTo(0, {immediate: true})
+        }
+    })
 })
 
 export default router

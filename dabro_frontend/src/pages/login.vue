@@ -1,6 +1,5 @@
 <script setup>
 
-import Header from "@/components/Header.vue";
 import {loginAdmin} from "@/api/apiGetters.js";
 import {ref} from "vue";
 import router from "@/router/index.js";
@@ -28,7 +27,6 @@ async function login() {
 </script>
 
 <template>
-    <Header/>
     <div class="login-wrapper">
         <form @submit.prevent="login" class="login-block">
             <h2>Авторизация</h2>

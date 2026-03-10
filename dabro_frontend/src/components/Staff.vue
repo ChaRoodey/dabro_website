@@ -8,18 +8,15 @@ const staffStore = useStaffStore()
 <template>
     <section class="staff" id="staff">
         <div class="staff-inner container">
-            <h1>наши мастера</h1>
-            <div class="staff-carousel-wrapper">
-                <button class="staff-carousel-btn prev">&#10094;</button>
-                <button class="staff-carousel-btn next">&#10095;</button>
-                <ul class="staff-list">
-                    <li class="staff-item"
-                        v-for="staff in staffStore.allStaff"
-                        :key="staffStore.allStaff?.staff_id"
-                    >
-                        <StaffCard :staffInfo="staff"/>
-                    </li>
-                </ul>
+            <div class="staff-content-wrapper">
+                <h1>наши мастера</h1>
+                <div class="staff-list">
+                    <StaffCard
+                            v-for="staff in staffStore.allStaff"
+                            :key="staffStore.allStaff?.staff_id"
+                            :staffInfo="staff"
+                    />
+                </div>
             </div>
         </div>
     </section>
@@ -75,10 +72,10 @@ const staffStore = useStaffStore()
 }
 
 .staff-list {
-    display: flex;
-    flex-direction: row;
-    gap: 0;
-    transition: transform 0.5s ease-in-out;
+    display: grid;
+    gap: 8px;
+    align-items: center;
+    grid-template-columns: 1fr 1fr 1fr;
 }
 
 .staff-item {

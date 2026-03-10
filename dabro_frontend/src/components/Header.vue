@@ -1,59 +1,60 @@
 <script setup>
 import {useProductsStore} from "@/stores/products.js";
+import {getLenis} from "@/plugins/lenis.js";
 
 const productStore = useProductsStore()
-
+const lenis = getLenis()
 
 </script>
 
 <template>
-    <div class="header-wrapper">
-        <router-link :to="{name: 'index'}" class="header-logo">
-            <img
-                    src="@/assets/img/logo.png"
-                    alt="DaBro logo"
-                    class="header-logo-image"
-                    width="174" height="63" loading="lazy"
-            >
-        </router-link>
-        <nav class="header-menu">
-            <ul class="header-menu-list">
-                <li class="header-menu-item">
-                    <a href="#" class="header-menu-link">У нас</a>
-                </li>
-                <li class="header-menu-item">
-                    <a href="#" class="header-menu-link">Мастера</a>
-                </li>
-                <!--                <li class="header-menu-item">-->
-                <!--                    <a href="/" class="header-menu-link">Услуги</a>-->
-                <!--                </li>-->
-                <li class="header-menu-item">
-                    <router-link :to="{name: 'shop'}" class="header-menu-link">Магазин</router-link>
-<!--                    <a href="#" class="header-menu-link">Галерея</a>-->
-                </li>
-                <li class="header-menu-item">
-                    <a href="#" class="header-menu-link">Контакты</a>
-                </li>
-            </ul>
-        </nav>
-        <div class="header-actions">
-            <a href="/" class="phone-number">8 912 642 20 20</a>
-<!--            <a href="https://b921434.yclients.com/company/857497/select-master?o=s12564603" class="appointment-btn">Онлайн-->
-<!--                запись</a>-->
-            <button class="appointment-btn" @click="productStore.openSidebar()">Онлайн запись</button>
+    <header class="header">
+        <div class="header-wrapper">
+            <router-link :to="{name: 'index'}" class="header-logo">
+                <img
+                        src="@/assets/img/logo.svg"
+                        alt="DaBro logo"
+                        class="header-logo-image"
+                        width="174" height="63" loading="lazy"
+                >
+            </router-link>
+            <nav class="header-menu">
+                <ul class="header-menu-list">
+                    <li class="header-menu-item">
+                        <a href="#staff" @click.prevent="lenis.scrollTo('#staff')" class="header-menu-link">Мастера</a>
+                    </li>
+                    <li class="header-menu-item">
+                        <a href="#price" @click.prevent="lenis.scrollTo('#price')" class="header-menu-link">Услуги</a>
+                    </li>
+                    <li class="header-menu-item">
+                        <router-link :to="{name: 'shop'}" class="header-menu-link">Магазин</router-link>
+                    </li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <a href="/" class="phone-number">8 912 642 20 20</a>
+                <button class="appointment-btn" @click="productStore.openSidebar()">Онлайн запись</button>
+            </div>
+            <button class="header-burger-button" id="burgerBtn" title="Open menu">
+                <span class="visually-hidden">Open menu</span>
+                <span class="header-burger-button-line"></span>
+                <span class="header-burger-button-line"></span>
+                <span class="header-burger-button-line"></span>
+            </button>
         </div>
-        <button class="header-burger-button" id="burgerBtn" title="Open menu">
-            <span class="visually-hidden">Open menu</span>
-            <span class="header-burger-button-line"></span>
-            <span class="header-burger-button-line"></span>
-            <span class="header-burger-button-line"></span>
-        </button>
-    </div>
-    <div class="header-line"></div>
+        <div class="header-line"></div>
+    </header>
 </template>
 
 <style scoped>
-.header-wrapper{
+.header {
+    position: sticky;
+    top: 0;
+    background: var(--color-black);
+    z-index: 9;
+}
+
+.header-wrapper {
     position: relative;
     display: flex;
     justify-content: space-between;
@@ -67,17 +68,17 @@ const productStore = useProductsStore()
     /*box-sizing: content-box;*/
 }
 
-.header-logo{
+.header-logo {
     flex-shrink: 0;
 }
 
-.header-menu-list{
+.header-menu-list {
     display: flex;
-    column-gap: 40px;
+    column-gap: 70px;
     margin: 0;
 }
 
-.header-menu-link{
+.header-menu-link {
     display: inline-flex;
     align-items: center;
     height: 90px;
@@ -86,12 +87,12 @@ const productStore = useProductsStore()
     letter-spacing: 1.4px;
 }
 
-.header-actions{
+.header-actions {
     display: flex;
     column-gap: 25px;
 }
 
-.header-burger-button{
+.header-burger-button {
     flex-direction: column;
     justify-content: center;
     align-items: center;

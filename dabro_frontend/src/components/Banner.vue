@@ -1,5 +1,7 @@
 <script setup>
+import {useProductsStore} from "@/stores/products.js";
 
+const productStore = useProductsStore()
 </script>
 
 <template>
@@ -9,12 +11,12 @@
                 <h1>мужской салон</h1>
                 <div class="banner-mid-info">
                     <h3>Мужские стрижки и<br>бритье бороды</h3>
-                    <img src="@/assets/img/logo_big.png" alt="DaBro logo">
+                    <img src="@/assets/img/logo.svg" alt="DaBro logo">
                 </div>
                 <h2>в екатеринбурге</h2>
-                <a class="banner-button desktop"
-                   href="https://b921434.yclients.com/company/857497/select-master?o=s12564603">Записаться к
-                    мастеру</a>
+                <button class="banner-button desktop" @click="productStore.openSidebar()">
+                    Записаться к мастеру
+                </button>
             </div>
             <div class="banner-photo">
                 <div class="banner-photo-frame">
@@ -24,9 +26,9 @@
                     <span class="line line-bottom"></span>
                 </div>
             </div>
-<!--            <a class="banner-button mobile"-->
-<!--               href="https://b921434.yclients.com/company/857497/select-master?o=s12564603">Записаться к-->
-<!--                мастеру</a>-->
+            <!--            <a class="banner-button mobile"-->
+            <!--               href="https://b921434.yclients.com/company/857497/select-master?o=s12564603">Записаться к-->
+            <!--                мастеру</a>-->
         </div>
     </section>
 </template>

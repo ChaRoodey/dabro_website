@@ -22,7 +22,7 @@ onUnmounted(() => {
 <template>
     <div class="modal-overlay" @click="emit('close')">
         <div class="modal-window">
-            <img :src="`http://localhost:8000/static/products/original/${productInfo.img_id}.webp`"/>
+            <img :src="productInfo.img_url"/>
             <div class="modal-content">
                 <h2>{{ productInfo.brand }}</h2>
                 <p class="modal-descr">{{ productInfo.description }}</p>

@@ -9,8 +9,8 @@ export function startLenis() {
   if (reduced) return null
 
   lenis = new Lenis({
-    autoRaf: true,     // сам крутит requestAnimationFrame
-    smoothWheel: true, // по умолчанию true, оставим явно
+    autoRaf: true,
+    smoothWheel: true,
   })
 
   return lenis

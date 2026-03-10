@@ -1,5 +1,7 @@
 <script setup>
+import {useProductsStore} from "@/stores/products.js";
 
+const productStore = useProductsStore()
 </script>
 
 <template>
@@ -8,8 +10,9 @@
             <h1>запись</h1>
             <div class="appointment-content">
                 <p>На услугу можно записаться онлайн или по звонку</p>
-                <a class="appointment-btn-black"
-                   href="https://b921434.yclients.com/company/857497/select-master?o=s12564603">Записаться онлайн</a>
+                <button class="appointment-btn-black" @click="productStore.openSidebar()">
+                    Записаться онлайн
+                </button>
                 <a class="appointment-btn-yellow" href="tel:+79049898678">Позвонить</a>
             </div>
         </div>
@@ -44,7 +47,8 @@
     text-transform: uppercase;
 }
 
-.appointment-content a {
+.appointment-content a,
+.appointment-content button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -76,5 +80,6 @@
     background-color: #111111;
     border-color: var(--color-gold);
     color: var(--color-gold);
+    transform: scale(1.01) translateY(-5%);
 }
 </style>

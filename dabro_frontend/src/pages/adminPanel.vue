@@ -3,7 +3,6 @@ import {onMounted, ref} from "vue";
 import {useStaffStore} from "@/stores/staff.js";
 import {usePhotosStore} from "@/stores/photos.js";
 import {useProductsStore} from "@/stores/products.js";
-import Header from "@/components/Header.vue";
 import PhotoModal from "@/components/PhotoModal.vue";
 import {startLenis, stopLenis} from "@/plugins/lenis.js";
 
@@ -54,7 +53,7 @@ function handleApply(payload) {
 
 function addStaffRow() {
     staffStore.allStaff.push({
-        staff_id: `temp_${Date.now()}`,
+        staff_id: Date.now(),
         name: "",
         grade: "",
         description: "",
@@ -64,7 +63,7 @@ function addStaffRow() {
 
 function addProductRow() {
     productStore.allProducts.push({
-        product_id: `temp_${Date.now()}`,
+        product_id: Date.now(),
         brand: "",
         description: "",
         size: "",
@@ -107,48 +106,11 @@ onMounted(() => {
 </script>
 
 <template>
-    <Header/>
     <main class="admin container">
         <header class="admin-header">
             <h1 class="admin-header-title">Админ-панель</h1>
             <p class="admin-header-subtitle">Картинки, сотрудники, импорт товаров из Excel</p>
         </header>
-
-        <!-- Images -->
-        <!--        <section class="admin-card">-->
-        <!--            <div class="card__head">-->
-        <!--                <h2>Картинки сайта (8 шт.)</h2>-->
-        <!--                <p class="muted">Выберите файл → проверьте превью → нажмите “Сохранить”</p>-->
-        <!--            </div>-->
-
-        <!--            <div class="images-grid">-->
-        <!--                <div class="image-item" v-for="(img, idx) in images" :key="img.key">-->
-        <!--                    <div class="image-item__top">-->
-        <!--                        <div class="badge">{{ img.key }}</div>-->
-        <!--                    </div>-->
-
-        <!--                    <div class="image-item__preview">-->
-        <!--                        <img v-if="img.previewUrl" :src="img.previewUrl" alt=""/>-->
-        <!--                        <img v-else-if="img.currentUrl" :src="img.currentUrl" alt=""/>-->
-        <!--                        <div v-else class="placeholder">Нет картинки</div>-->
-        <!--                    </div>-->
-
-        <!--                    <div class="image-item__controls">-->
-        <!--                        <input-->
-        <!--                                type="file"-->
-        <!--                                accept="image/*"-->
-        <!--                                @change="onPickImageFile(idx, $event.target.files?.[0] || null)"-->
-        <!--                        />-->
-
-        <!--                        <button class="btn" :disabled="img.saving" @click="saveImage(idx)">-->
-        <!--                            {{ img.saving ? "Сохранение..." : "Сохранить" }}-->
-        <!--                        </button>-->
-
-        <!--                        <p v-if="img.error" class="error">{{ img.error }}</p>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--        </section>-->
 
         <!-- Staff -->
         <section class="admin-card">
@@ -235,7 +197,7 @@ onMounted(() => {
                         {{ productStore.productsLoading ? "Загрузка..." : "Обновить" }}
                     </button>
 
-                    <button class="base-black-btn btn" @click="addProductRow">+ Добавить сотрудника</button>
+                    <button class="base-black-btn btn" @click="addProductRow">+ Добавить товар</button>
                 </div>
             </div>
 
@@ -332,7 +294,6 @@ onMounted(() => {
 
 <style scoped>
 .admin {
-    //margin: 0 auto;
     padding: 24px 16px 60px;
 }
 
@@ -371,68 +332,10 @@ onMounted(() => {
     margin: 6px 0 0;
 }
 
-.images-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 12px;
-}
-
-@media (max-width: 980px) {
-    .images-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
-
-@media (max-width: 520px) {
-    .images-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-.image-item {
-    border: 1px solid rgba(255, 255, 255, 0.10);
-    border-radius: 10px;
-    padding: 10px;
-}
-
-.image-item__top {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px;
-}
-
-.badge {
-    font-size: 12px;
-    padding: 4px 8px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.image-item__preview {
-    height: 140px;
-    border-radius: 8px;
-    overflow: hidden;
-    background: rgba(255, 255, 255, 0.05);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .image-item__preview img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-}
-
-.placeholder {
-    opacity: 0.6;
-    font-size: 13px;
-}
-
-.image-item__controls {
-    margin-top: 10px;
-    display: grid;
-    gap: 8px;
 }
 
 .base-black-btn {
@@ -455,15 +358,6 @@ onMounted(() => {
 .btn:disabled {
     opacity: 0.6;
     cursor: default;
-}
-
-.btn--secondary {
-    opacity: 0.9;
-}
-
-.btn--danger {
-    background: #c0392b;
-    color: white;
 }
 
 .photo-cell {
@@ -544,11 +438,11 @@ onMounted(() => {
 }
 
 @media (max-width: 980px) {
-    .table__row {
+    .table-row {
         grid-template-columns: 1fr;
     }
 
-    .table__row--head {
+    .table-row-head {
         display: none;
     }
 }

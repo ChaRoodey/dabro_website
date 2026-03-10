@@ -1,5 +1,4 @@
 <script setup>
-import Header from "@/components/Header.vue";
 import Filter from "@/components/Filter.vue";
 import Catalog from "@/components/Catalog.vue";
 import Footer from "@/components/Footer.vue";
@@ -14,7 +13,6 @@ onMounted(() => {
 </script>
 
 <template>
-    <Header/>
     <div class="catalog-inner container">
         <h2>Магазин</h2>
         <h3>Профессиональные средства для волос, бороды и тела</h3>

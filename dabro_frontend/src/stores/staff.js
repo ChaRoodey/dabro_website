@@ -62,9 +62,7 @@ export const useStaffStore = defineStore('staff', () => {
         uploadingStaff.value = true
 
         try {
-            console.log('in staff upload');
             const updatedPhotos = await photosStore.uploadPhotos('staff')
-            console.log('in staff upload');
             if (!updatedPhotos) return;
 
             const updatedPhotosMap = new Map(

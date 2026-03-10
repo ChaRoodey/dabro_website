@@ -1,23 +1,28 @@
 <script setup>
+import {useProductsStore} from "@/stores/products.js";
+
 const props = defineProps({
     staffInfo: {
         type: Object,
         required: true
     }
 })
+const productStore = useProductsStore()
 </script>
 
 <template>
-    <div class="staff-img-wrapper">
-        <img :src="props.staffInfo?.img_url"
-             alt="name photo">
-        <div class="overlay">
-            <p>{{ props.staffInfo?.description }}</p>
+    <div class="staff-card-wrapper">
+        <div class="staff-img-wrapper">
+            <img :src="props.staffInfo?.img_url"
+                 alt="name photo">
+            <div class="overlay">
+                <p>{{ props.staffInfo?.description }}</p>
+            </div>
         </div>
+        <h2>{{ props.staffInfo?.name }}</h2>
+        <h3>{{ props.staffInfo?.grade }}</h3>
+        <button @click="productStore.openSidebar()">Записаться</button>
     </div>
-    <h2>{{ props.staffInfo?.name }}</h2>
-    <h3>{{ props.staffInfo?.grade }}</h3>
-    <a href="https://b921434.yclients.com/company/857497/select-master?o=s12564603">Записаться</a>
 </template>
 
 <style scoped>
@@ -61,7 +66,7 @@ const props = defineProps({
     font-weight: 400;
 }
 
-.staff-item h2 {
+.staff-card-wrapper h2 {
     font-family: var(--font-family-base), Arial, sans-serif;
     font-size: 22px;
     font-weight: 400;
@@ -70,7 +75,7 @@ const props = defineProps({
     margin: 20px 0;
 }
 
-.staff-item h3 {
+.staff-card-wrapper h3 {
     font-family: var(--font-family-base), Arial, sans-serif;
     font-size: 16px;
     font-weight: 400;
@@ -78,7 +83,7 @@ const props = defineProps({
     text-transform: capitalize;
 }
 
-.staff-item a {
+.staff-card-wrapper button {
     text-transform: none;
     margin: 30px 0;
     width: 200px;
@@ -91,7 +96,8 @@ const props = defineProps({
     font-size: 20px;
     display: inline-flex;
     align-items: center;
+    border: 0;
     border-radius: var(--border-radius);
-    box-shadow: 0 0 5px rgba(236, 223, 165, 0.8);
+    box-shadow: 0 0 20px rgba(236, 223, 165, 0.8);
 }
 </style>
