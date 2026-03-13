@@ -38,21 +38,23 @@ onBeforeUnmount(() => {
                 </div>
                 <div class="footer-social-media">
                     <h4>Социальные сети</h4>
-                    <a href="https://vk.com/dabro_sun">
-                        <svg width="60" height="60">
-                            <use href="#icon-vk"/>
-                        </svg>
-                    </a>
-                    <a href="https://www.instagram.com/dabro_sun/">
-                        <svg width="60" height="60">
-                            <use href="#icon-instagram"/>
-                        </svg>
-                    </a>
-                    <a href="https://t.me/dabro_sun">
-                        <svg width="60" height="60">
-                            <use href="#icon-telegram"/>
-                        </svg>
-                    </a>
+                    <div class="footer-social-media-links">
+                        <a href="https://vk.com/dabro_sun">
+                            <svg width="60" height="60">
+                                <use href="#icon-vk"/>
+                            </svg>
+                        </a>
+                        <a href="https://www.instagram.com/dabro_sun/">
+                            <svg width="60" height="60">
+                                <use href="#icon-instagram"/>
+                            </svg>
+                        </a>
+                        <a href="https://t.me/dabro_sun">
+                            <svg width="60" height="60">
+                                <use href="#icon-telegram"/>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="footer-map">
@@ -118,11 +120,35 @@ onBeforeUnmount(() => {
     height: 330px;
 }
 
+.footer-social-media {
+    padding-right: 30px;
+}
+
 .footer-copyright {
     text-align: center;
     padding: 40px 0;
     font-family: var(--font-family-base), Arial, sans-serif;
     font-size: clamp(12px, 1.56vw, 16px);
     color: var(--color-light-gold);
+}
+
+@media (max-width: 680px) {
+    .footer {
+        min-height: 400px;
+    }
+
+    .footer-copyright {
+        padding: 10px 0;
+    }
+
+    .footer-social-media svg {
+        width: 40px;
+        height: 40px;
+    }
+
+    .footer-social-media-links {
+        display: flex;
+        justify-content: space-around;
+    }
 }
 </style>

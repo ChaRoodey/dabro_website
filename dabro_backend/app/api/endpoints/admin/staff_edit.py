@@ -46,6 +46,7 @@ async def add_staff(data: List[StaffPatchSchema], session: AsyncSession = Depend
         update_data.pop("staff_id", None)
         for field, value in update_data.items():
             setattr(staff, field, value)
+            logger.debug(f"Updated {field=}, {value=}")
 
     return {
         'status': 'ok',

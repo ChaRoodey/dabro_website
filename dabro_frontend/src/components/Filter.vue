@@ -25,7 +25,7 @@ function handleSubmit() {
         <div class="filter-block">
             <span class="filter-block-line"></span>
             <h5>Категория</h5>
-            <div class="filter-checkboxes">
+            <div class="filter-checkboxes" data-lenis-prevent-wheel>
                 <label v-for="category in productStore.allFilters.categories" :key="category">
                     <input type="checkbox" :value="category" v-model="form.categories">
                     {{ category }}
@@ -36,7 +36,7 @@ function handleSubmit() {
         <div class="filter-block">
             <span class="filter-block-line"></span>
             <h5>Бренд</h5>
-            <div class="filter-checkboxes">
+            <div class="filter-checkboxes" data-lenis-prevent-wheel>
                 <label v-for="brand in productStore.allFilters.brands" :key="brand">
                     <input type="checkbox" :value="brand" v-model="form.brands">
                     {{ brand }}
@@ -112,9 +112,9 @@ h4,
 
 .filter-checkboxes {
     margin-top: min(20px, 1.5vw);
-}
-
-.filter-checkboxes {
+    max-height: 220px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     font-size: clamp(16px, 1.5vw, 20px);
     font-weight: 400;
     display: flex;
@@ -135,7 +135,7 @@ h4,
 
     width: 15px;
     height: 15px;
-    border: 2px solid var(--color-light-gold);
+    border: 1px solid var(--color-light-gold);
     border-radius: 1px;
     cursor: pointer;
     position: relative;
@@ -170,5 +170,11 @@ h4,
 
 .filter-accept-btn:active {
     transform: translateY(1%)
+}
+
+@media (max-width: 900px) {
+    .filter-block-inner {
+        display: none;
+    }
 }
 </style>

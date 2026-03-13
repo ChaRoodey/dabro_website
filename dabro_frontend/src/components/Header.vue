@@ -1,10 +1,39 @@
 <script setup>
 import {useProductsStore} from "@/stores/products.js";
 import {getLenis} from "@/plugins/lenis.js";
+import router from "@/router/index.js";
+import {useRoute} from "vue-router";
+import {ref} from "vue";
+import iconsSprite from '@/assets/icons/icons.svg?raw'
+import MobileMenu from "@/components/MobileMenu.vue";
 
 const productStore = useProductsStore()
-const lenis = getLenis()
+const route = useRoute()
+const isMobileMenuOpened = ref(false)
 
+async function goToSection(target) {
+    if (route.name !== 'index') {
+        await router.push({
+            name: 'index',
+            query: {scroll: target.replace('#', '')}
+        })
+        return
+    }
+
+    const lenis = getLenis()
+    if (!lenis) return
+
+    lenis.scrollTo(target, {offset: -100})
+}
+
+function openMobileSidebar() {
+    isMobileMenuOpened.value = true;
+}
+
+function closeMobileSidebar(option) {
+    isMobileMenuOpened.value = false;
+    if (option) goToSection(option)
+}
 </script>
 
 <template>
@@ -21,10 +50,10 @@ const lenis = getLenis()
             <nav class="header-menu">
                 <ul class="header-menu-list">
                     <li class="header-menu-item">
-                        <a href="#staff" @click.prevent="lenis.scrollTo('#staff')" class="header-menu-link">Мастера</a>
+                        <a href="" @click.prevent="goToSection('#staff')" class="header-menu-link">Мастера</a>
                     </li>
                     <li class="header-menu-item">
-                        <a href="#price" @click.prevent="lenis.scrollTo('#price')" class="header-menu-link">Услуги</a>
+                        <a href="" @click.prevent="goToSection('#price')" class="header-menu-link">Услуги</a>
                     </li>
                     <li class="header-menu-item">
                         <router-link :to="{name: 'shop'}" class="header-menu-link">Магазин</router-link>
@@ -32,15 +61,22 @@ const lenis = getLenis()
                 </ul>
             </nav>
             <div class="header-actions">
-                <a href="/" class="phone-number">8 912 642 20 20</a>
+                <a href="tel:+79126422020" class="phone-number">8 912 642 20 20</a>
                 <button class="appointment-btn" @click="productStore.openSidebar()">Онлайн запись</button>
             </div>
-            <button class="header-burger-button" id="burgerBtn" title="Open menu">
+            <button class="header-burger-button" title="Open menu" @click="openMobileSidebar">
                 <span class="visually-hidden">Open menu</span>
                 <span class="header-burger-button-line"></span>
                 <span class="header-burger-button-line"></span>
                 <span class="header-burger-button-line"></span>
             </button>
+
+            <MobileMenu
+                    v-if="isMobileMenuOpened"
+                    @staffLink="closeMobileSidebar('#staff')"
+                    @priceLink="closeMobileSidebar('#price')"
+                    @close="closeMobileSidebar"
+            />
         </div>
         <div class="header-line"></div>
     </header>
@@ -113,5 +149,52 @@ const lenis = getLenis()
 .header-line {
     width: 100%;
     border-top: 2px solid var(--color-light-gold);
+}
+
+@media (max-width: 1280px) {
+    .header-wrapper {
+        flex-wrap: wrap;
+        row-gap: 10px;
+        padding: 20px 0;
+        padding-inline: 15px;
+    }
+
+    .header-menu {
+        order: 1;
+        flex-basis: 100%;
+    }
+
+    .header-menu-link {
+        height: 50px;
+    }
+
+    .phone-number {
+        padding-inline: 15px;
+    }
+}
+
+@media (max-width: 680px) {
+    .header-logo {
+        padding-left: 25px;
+    }
+
+    .header-menu {
+        display: none;
+    }
+
+    .header-burger-button {
+        display: inline-flex;
+    }
+
+    .header-line {
+        top: 90px;
+    }
+
+}
+
+@media (max-width: 480px) {
+    .phone-number {
+        display: none;
+    }
 }
 </style>

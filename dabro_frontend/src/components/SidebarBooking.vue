@@ -51,7 +51,7 @@ function closeSidebar() {
     top: 0;
     right: 0;
     height: 100%;
-    width: min(40%, 500px);
+    width: clamp(450px, 40%, 500px);
     border-left: 1px solid rgba(255, 255, 255, .06);
 }
 

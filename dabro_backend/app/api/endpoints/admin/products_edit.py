@@ -25,6 +25,16 @@ router = APIRouter(
 
 ALLOWED_EXTENSIONS = {".webp", ".jpg", ".jpeg", ".png"}
 MAX_FILE_SIZE = 10 * 1024 * 1024
+FIELDS_TO_CHECK = (
+    "cost",
+    "items_left",
+    "brand",
+    "category",
+    "description",
+    "size",
+    "title",
+)
+
 logger = get_logger(__name__)
 
 
@@ -47,7 +57,6 @@ async def update_product(
         session: AsyncSession = Depends(get_transactional_session)
 ):
     ids = [item.product_id for item in data]
-    print(data)
 
     res = await session.execute(select(ProductModel).where(ProductModel.product_id.in_(ids)))
     rows = res.scalars().all()
@@ -92,64 +101,92 @@ async def update_products_with_excel(
 ):
     if not file.filename.endswith('.xlsx'):
         logger.warning("Not .xlsx file filename: %s", file.filename)
-        raise HTTPException(status_code=400, detail="Only .xlsx files are supported")
+        raise HTTPException(status_code=400, detail={
+            "status": "validation_error",
+            "message": "Поддерживаются только файлы .xlsx",
+        })
 
     raw = await file.read()
     try:
-        rows = parse_products_sheet(raw)
+        parsed = parse_products_sheet(raw)
     except Exception as e:
         logger.warning("Parsing error detail=%s", str(e))
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail={
+            "status": "validation_error",
+            "message": "Ошибка при чтении файла .xlsx",
+        })
+
+    rows = parsed['items']
+    validation_errors = parsed["errors"]
+
+    if validation_errors:
+        return {
+            "status": "validation_error",
+            "message": "Файл содержит ошибки валидации",
+            "errors": validation_errors,
+        }
 
     if not rows:
-        return {"status": "ok", "updated": 0, "skipped": 0, "missing": 0, "details": []}
+        return {"status": "ok", "updated": 0, "skipped": 0, "details": []}
 
-    file_ids = [row['product_id'] for row in rows]
+    file_ids = [row['excel_product_id'] for row in rows]
 
     res = await session.execute(
-        select(ProductModel).where(ProductModel.product_id.in_(file_ids))
+        select(ProductModel).where(ProductModel.excel_product_id.in_(file_ids))
     )
     products = res.scalars().all()
-    by_id = {p.product_id: p for p in products}
+    by_id = {p.excel_product_id: p for p in products}
 
+    added = 0
     updated = 0
     skipped = 0
-    # missing = 0
     details = []
 
     for row in rows:
-        product_id = row['product_id']
-        obj = by_id.get(product_id)
+        excel_product_id = row["excel_product_id"]
+        obj = by_id.get(excel_product_id)
 
         if obj is None:
-            # missing += 1
-            # details.append({"row": row["row"], "product_id": product_id, "action": "missing"})
+            schema = ProductAddSchema(**row)
+            session.add(ProductModel(**schema.model_dump()))
+            added += 1
+            details.append({
+                "row": row["row"],
+                "excel_id": excel_product_id,
+                "action": "added",
+            })
             continue
 
         changed_fields = []
 
-        if obj.cost != row['cost']:
-            obj.cost = row['cost']
-            changed_fields.append('cost')
+        for field in FIELDS_TO_CHECK:
+            new_value = row[field]
+            old_value = getattr(obj, field)
 
-        if obj.items_left != row['items_left']:
-            obj.items_left = row['items_left']
-            changed_fields.append('items_left')
+            if old_value != new_value:
+                setattr(obj, field, new_value)
+                changed_fields.append(field)
 
         if changed_fields:
             updated += 1
-            details.append(
-                {"row": row["row"], "product_id": product_id, "action": "updated", "fields": changed_fields}
-            )
+            details.append({
+                "row": row["row"],
+                "excel_id": excel_product_id,
+                "action": "updated",
+                "fields": changed_fields,
+            })
         else:
             skipped += 1
-            details.append({"row": row["row"], "product_id": product_id, "action": "no_changes"})
-
+            details.append({
+                "row": row["row"],
+                "excel_id": excel_product_id,
+                "action": "no_changes",
+            })
     return {
         "status": "ok",
+        'added': added,
         "updated": updated,
         "skipped": skipped,
-        # "missing": missing,
         "details": details,
     }
 
@@ -220,7 +257,7 @@ async def upload_product_photos(
             'img_url': f'https://95d33001-e90b-4eee-a5ae-bf819f211dd7.selstorage.ru/{image_name}',
         })
 
-    logger.debug("Successfully added $s photos: %s", len(uploaded_files), uploaded_files)
+    logger.debug("Successfully added %s photos: %s", len(uploaded_files), uploaded_files)
 
     return {
         'status': 'ok',

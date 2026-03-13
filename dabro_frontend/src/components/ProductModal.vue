@@ -1,6 +1,7 @@
 <script setup>
 import {onMounted, onUnmounted} from "vue"
 import {startLenis, stopLenis} from "@/plugins/lenis.js";
+import defaultImg from "@/assets/img/product_default.webp";
 
 defineProps({
     productInfo: Object,
@@ -20,17 +21,18 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div class="modal-overlay" @click="emit('close')">
+    <div class="modal-overlay" @click.self="emit('close')">
         <div class="modal-window">
-            <img :src="productInfo.img_url"/>
+            <img :src="productInfo.img_url || defaultImg" :alt="productInfo.brand">
             <div class="modal-content">
-                <h2>{{ productInfo.brand }}</h2>
+                <h2>{{ productInfo.title }}</h2>
+                <h3>{{ productInfo.brand }}</h3>
                 <p class="modal-descr">{{ productInfo.description }}</p>
                 <div class="inline-cost-size">
-                    <p>{{ productInfo.cost }}р</p>
-                    <p>{{ productInfo.size }}</p>
+                    <p class="item-p">{{ productInfo.cost }}р/{{ productInfo.size }}</p>
+                    <p class="item-p">{{ outOfStock ? 'Нет в наличии' : productInfo.items_left + 'шт' }}</p>
                 </div>
-                <button @click="emit('close')" class="modal-close-btn">Закрыть</button>
+                <button @click="emit('close')" class="modal-back-btn">← Назад</button>
             </div>
         </div>
     </div>
@@ -51,12 +53,12 @@ onUnmounted(() => {
 }
 
 .modal-window {
+    position: relative;
     width: 100%;
     background: #111;
     color: var(--color-light-gold);
     max-width: 800px;
     max-height: 90vh;
-    overflow-y: auto;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -76,13 +78,27 @@ onUnmounted(() => {
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
+    justify-content: center;
     gap: 10px;
+    overflow-y: auto;
 }
 
 .modal-content h2 {
-    margin-bottom: 10px;
-    font-size: 48px;
+    margin-bottom: 5px;
+    font-size: 32px;
     color: var(--color-gold);
+}
+
+.modal-content h3 {
+    margin-bottom: 10px;
+    font-size: 24px;
+    color: var(--color-gold);
+}
+
+.item-p {
+    font-size: clamp(10px, 2.5vw, 24px);
+    font-weight: 400;
 }
 
 .modal-descr {
@@ -104,19 +120,15 @@ onUnmounted(() => {
     object-fit: cover;
 }
 
-.modal-close-btn {
-    margin-top: 10px;
-    padding: 10px 16px;
-    border-radius: 8px;
-    border: none;
-    background: var(--color-gold);
-    color: #000;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-.modal-close-btn:hover {
-    background: var(--color-light-gold);
+.modal-back-btn {
+    font-size: clamp(18px, 1.84vw, 24px);
+    text-transform: uppercase;
+    font-weight: 500;
+    background: transparent;
+    position: absolute;
+    top: -40px;
+    left: 0;
+    z-index: 10;
 }
 
 @keyframes fadeIn {
@@ -138,4 +150,15 @@ onUnmounted(() => {
         transform: scale(1);
     }
 }
+
+@media (max-width: 1280px) {
+    .modal-window {
+        width: 90%;
+    }
+
+    .modal-window img {
+        width: 30%;
+    }
+}
+
 </style>

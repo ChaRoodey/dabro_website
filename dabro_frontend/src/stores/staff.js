@@ -2,6 +2,7 @@ import {defineStore} from "pinia";
 import {ref} from "vue";
 import {apiAddStaff, apiDeleteStaff, apiChangeStaff, fetchAllStaff} from "@/api/apiGetters.js";
 import {usePhotosStore} from "@/stores/photos.js";
+import {useProductsStore} from "@/stores/products.js";
 
 const PATCH_FIELDS = ["name", "grade", "description", "img_url"];
 
@@ -31,9 +32,11 @@ export const useStaffStore = defineStore('staff', () => {
     const allStaff = ref([])
     const loadingStaff = ref(false)
     const uploadingStaff = ref(false)
+    const staffDeleting = ref(false)
     const staffSnapshot = ref(new Map())
 
     const photosStore = usePhotosStore();
+    const productStore = useProductsStore()
 
     async function loadStaff() {
         loadingStaff.value = true;
@@ -60,6 +63,8 @@ export const useStaffStore = defineStore('staff', () => {
 
     async function uploadStaff() {
         uploadingStaff.value = true
+        productStore.adminError = ''
+        productStore.adminSuccess = ''
 
         try {
             const updatedPhotos = await photosStore.uploadPhotos('staff')
@@ -69,10 +74,10 @@ export const useStaffStore = defineStore('staff', () => {
                 updatedPhotos.map(item => [item.id, item.img_url])
             )
 
-            allStaff.value.forEach(product => {
-                const newUrl = updatedPhotosMap.get(product.id)
+            allStaff.value.forEach(staff => {
+                const newUrl = updatedPhotosMap.get(staff.staff_id)
                 if (newUrl) {
-                    product.img_url = newUrl
+                    staff.img_url = newUrl
                 }
             })
 
@@ -99,25 +104,34 @@ export const useStaffStore = defineStore('staff', () => {
             ])
 
             await loadStaff();
+            productStore.adminSuccess = 'Сохранено'
         } catch (e) {
-            console.log(e);
+            productStore.adminError = productStore.getApiErrorMessage(e);
         } finally {
             uploadingStaff.value = false
         }
     }
 
     async function deleteStaff(id) {
+        productStore.adminError = ''
+        productStore.adminSuccess = ''
+        staffDeleting.value = true
+
         try {
-            await apiDeleteStaff({ staff_id: id })
+            await apiDeleteStaff({staff_id: id})
             await loadStaff()
+            productStore.adminSuccess = 'Удалено'
         } catch (e) {
-            console.log(e);
+            productStore.adminError = productStore.getApiErrorMessage(e);
+        } finally {
+            staffDeleting.value = false
         }
     }
 
     return {
         loadingStaff,
         uploadingStaff,
+        staffDeleting,
         allStaff,
         loadStaff,
         uploadStaff,

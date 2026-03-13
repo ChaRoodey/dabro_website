@@ -18,7 +18,7 @@ function handleClose() {
 </script>
 
 <template>
-    <div class="catalog-inner">
+    <div class="catalog-content-inner">
         <router-link :to="{name: 'index'}" class="catalog-back-btn">← Назад</router-link>
         <div class="catalog-list">
             <CatalogItem
@@ -42,7 +42,7 @@ function handleClose() {
 </template>
 
 <style scoped>
-.catalog-inner {
+.catalog-content-inner {
     display: flex;
     flex-direction: column;
     //align-items: center;
@@ -87,5 +87,11 @@ function handleClose() {
 
 .catalog-list-load-more-btn:active {
     transform: translateY(1%)
+}
+
+@media (max-width: 1280px) {
+    .catalog-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 </style>

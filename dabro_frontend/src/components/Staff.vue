@@ -24,6 +24,7 @@ const staffStore = useStaffStore()
 
 <style scoped>
 .staff-inner {
+    padding: 0 40px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -38,49 +39,25 @@ const staffStore = useStaffStore()
     text-transform: uppercase;
 }
 
-.staff-carousel-wrapper {
-    position: relative;
-    overflow: hidden;
-}
-
-.staff-carousel-btn {
-    position: absolute;
-    top: 40%;
-    z-index: 3;
-    width: 30px;
-    height: 30px;
-    transform: translateY(-50%);
-    background: #cdcdcd;
-    color: #131512;
-    border: none;
-    /*padding: 10px 15px;*/
-    cursor: pointer;
-    border-radius: 50%;
-}
-
-.staff-carousel-btn:hover {
-    color: #b5b5b5;
-}
-
-.staff-carousel-btn.next {
-    right: 10px;
-}
-
-.staff-carousel-btn.prev {
-    display: none;
-    left: 10px;
-}
-
 .staff-list {
     display: grid;
-    gap: 8px;
+    gap: 50px;
     align-items: center;
     grid-template-columns: 1fr 1fr 1fr;
 }
 
-.staff-item {
-    flex: 0 0 clamp(200px, 25vw, 300px);
-    margin-right: 50px;
-    justify-content: center;
+@media (max-width: 1000px) {
+    .staff-list {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 680px) {
+    .staff-list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
 }
 </style>

@@ -15,6 +15,8 @@
 :deep(.slick-slide h3) {
   color: #fff;
 }
+
+
 </style>
 <script setup lang="ts">
 </script>

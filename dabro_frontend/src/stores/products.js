@@ -48,7 +48,6 @@ function toPatchProductPayload(oldData, newData) {
     return Object.keys(patch).length > 1 ? patch : null;
 }
 
-
 export const useProductsStore = defineStore('products', () => {
     const allProducts = ref([])
     const allFilters = ref({brands: [], categories: [], min_price: null, max_price: null})
@@ -56,8 +55,10 @@ export const useProductsStore = defineStore('products', () => {
     const initLoading = ref(false)
     const productsLoading = ref(false)
     const productsUploading = ref(false)
+    const productsDeleting = ref(false)
+    const adminError = ref('')
+    const adminSuccess = ref('')
     const filtersLoading = ref(false)
-    const error = ref(null)
 
     const validationErrors = ref({})
     const sidebarOpen = ref(false)
@@ -71,30 +72,55 @@ export const useProductsStore = defineStore('products', () => {
 
     const photosStore = usePhotosStore();
 
+    function getApiErrorMessage(e) {
+    console.log('API error:', e)
+
+    if (
+        e.code === 'ECONNABORTED' ||
+        e.code === 'ERR_NETWORK' ||
+        e.message === 'Network Error' ||
+        !e.response
+    ) {
+        return 'Сервер недоступен, попробуйте позже'
+    }
+
+    const detail = e.response?.data?.detail
+
+    if (typeof detail === 'string') {
+        return detail
+    }
+
+    if (typeof detail === 'object' && detail?.message) {
+        return detail.message
+    }
+
+    return 'Произошла ошибка'
+}
+
     function openSidebar() {
         sidebarOpen.value = true
 
-        stopLenis()
+        // stopLenis()
         document.body.style.overflow = "hidden"
     }
 
     function closeSidebar() {
         sidebarOpen.value = false
 
-        startLenis()
         document.body.style.overflow = ""
+        // startLenis()
     }
 
     async function shopLoadInit() {
         initLoading.value = true
-        error.value = false
+        adminError.value = ''
 
         try {
             const [productsRes, filtersRes] = await Promise.all([fetchAllProducts(), fetchAllFilters(),])
-            allProducts.value = productsRes.data
+            allProducts.value = productsRes.data.sort((a, b) => b.items_left - a.items_left);
             allFilters.value = filtersRes.data
         } catch (e) {
-            error.value = e
+            adminError.value = getApiErrorMessage(e);
         } finally {
             initLoading.value = false
         }
@@ -102,10 +128,11 @@ export const useProductsStore = defineStore('products', () => {
 
     async function loadProducts() {
         productsLoading.value = true
+        adminError.value = ''
+
         try {
             const res = await fetchAllProducts();
-            allProducts.value = res.data;
-
+            allProducts.value = res.data
 
             const map = new Map()
             for (const item of res.data) {
@@ -121,6 +148,8 @@ export const useProductsStore = defineStore('products', () => {
                 })
             }
             productsSnapshot.value = map;
+        } catch (e) {
+            adminError.value = getApiErrorMessage(e);
         } finally {
             productsLoading.value = false
         }
@@ -153,21 +182,24 @@ export const useProductsStore = defineStore('products', () => {
 
     async function uploadProducts() {
         productsUploading.value = true
+        adminError.value = ''
+        adminSuccess.value = ''
 
         try {
             const updatedPhotos = await photosStore.uploadPhotos('product')
-            if (!updatedPhotos) return;
 
-            const updatedPhotosMap = new Map(
-                updatedPhotos.map(item => [item.id, item.img_url])
-            )
+            if (updatedPhotos) {
+                const updatedPhotosMap = new Map(
+                    updatedPhotos.map(item => [item.id, item.img_url])
+                )
 
-            allProducts.value.forEach(product => {
-                const newUrl = updatedPhotosMap.get(product.id)
-                if (newUrl) {
-                    product.img_url = newUrl
-                }
-            })
+                allProducts.value.forEach(product => {
+                    const newUrl = updatedPhotosMap.get(product.product_id)
+                    if (newUrl) {
+                        product.img_url = newUrl
+                    }
+                })
+            }
 
             const newItems = [];
             const changedItems = [];
@@ -184,7 +216,7 @@ export const useProductsStore = defineStore('products', () => {
                 if (patch) changedItems.push(patch)
             }
 
-            if (!newItems.length && !changedItems.length) return;
+            if (!newItems.length && !changedItems.length) return
 
             const results = await Promise.all([
                 newItems.length ? apiAddProducts(newItems) : Promise.resolve(),
@@ -192,19 +224,27 @@ export const useProductsStore = defineStore('products', () => {
             ])
 
             await loadProducts();
+            adminSuccess.value = 'Сохранено'
         } catch (e) {
-            console.log(e);
+            adminError.value = getApiErrorMessage(e);
         } finally {
             productsUploading.value = false
         }
     }
 
     async function deleteProduct(id) {
+        adminError.value = ''
+        productsDeleting.value = true
+        adminSuccess.value = ''
+
         try {
             await apiDeleteProduct({product_id: id})
             await loadProducts()
+            adminSuccess.value = 'Удалено'
         } catch (e) {
-            console.log(e);
+            adminError.value = getApiErrorMessage(e);
+        } finally {
+            productsDeleting.value = false
         }
     }
 
@@ -223,7 +263,15 @@ export const useProductsStore = defineStore('products', () => {
             const res = await apiUploadProductsExcel(form);
             excelResults.value = res.data;
         } catch (e) {
-            excelError.value = e.response?.data?.detail ?? "Ошибка импорта";
+            const detail = e.response?.data?.detail;
+
+            if (detail && typeof detail === 'object') {
+                excelResults.value = detail;
+                excelError.value = '';
+            } else {
+                excelResults.value = null;
+                excelError.value = detail || "Ошибка импорта";
+            }
         } finally {
             excelUploading.value = false;
         }
@@ -234,8 +282,10 @@ export const useProductsStore = defineStore('products', () => {
         allFilters,
         initLoading,
         productsLoading,
+        productsDeleting,
+        adminSuccess,
         filtersLoading,
-        error,
+        adminError,
         validationErrors,
         sidebarOpen,
         excelError,
@@ -251,5 +301,6 @@ export const useProductsStore = defineStore('products', () => {
         uploadProductsExcel,
         uploadProducts,
         deleteProduct,
+        getApiErrorMessage,
     }
 })

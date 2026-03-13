@@ -82,4 +82,18 @@ const productStore = useProductsStore()
     color: var(--color-gold);
     transform: scale(1.01) translateY(-5%);
 }
+
+@media (max-width: 1000px) {
+    .appointment-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .appointment-content {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
 </style>

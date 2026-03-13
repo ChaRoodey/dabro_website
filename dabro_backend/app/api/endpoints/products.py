@@ -14,7 +14,7 @@ router = APIRouter(
 
 @router.get("/all")
 async def get_all_products(session: AsyncSession = Depends(get_db_session)):
-    result = await session.execute(select(ProductModel))
+    result = await session.execute(select(ProductModel).order_by(ProductModel.excel_product_id))
     products = result.scalars().all()
     return products
 
@@ -22,10 +22,10 @@ async def get_all_products(session: AsyncSession = Depends(get_db_session)):
 @router.get("/filters")
 async def get_all_filters(session: AsyncSession = Depends(get_db_session)):
     brands_res = await session.execute(
-        select(ProductModel.brand).distinct()
+        select(ProductModel.brand).where(ProductModel.brand.isnot(None)).distinct()
     )
     categories_res = await session.execute(
-        select(ProductModel.category).distinct()
+        select(ProductModel.category).where(ProductModel.category.isnot(None)).distinct()
     )
     prices_res = await session.execute(
         select(func.min(ProductModel.cost), func.max(ProductModel.cost))

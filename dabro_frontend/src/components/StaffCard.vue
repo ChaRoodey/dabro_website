@@ -1,5 +1,6 @@
 <script setup>
 import {useProductsStore} from "@/stores/products.js";
+import defaultImg from '@/assets/img/staff_default.webp'
 
 const props = defineProps({
     staffInfo: {
@@ -13,7 +14,7 @@ const productStore = useProductsStore()
 <template>
     <div class="staff-card-wrapper">
         <div class="staff-img-wrapper">
-            <img :src="props.staffInfo?.img_url"
+            <img :src="props.staffInfo.img_url || defaultImg"
                  alt="name photo">
             <div class="overlay">
                 <p>{{ props.staffInfo?.description }}</p>
@@ -30,6 +31,10 @@ const productStore = useProductsStore()
     position: relative;
     overflow: hidden;
     width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .overlay {
@@ -50,6 +55,9 @@ const productStore = useProductsStore()
 .staff-img-wrapper img {
     transition: opacity 0.5s ease-in-out;
     filter: grayscale(100%);
+    object-fit: cover;
+    height: clamp(350px, 38.46vw, 500px);
+    width: 100%;
 }
 
 .staff-img-wrapper:hover img {
@@ -99,5 +107,17 @@ const productStore = useProductsStore()
     border: 0;
     border-radius: var(--border-radius);
     box-shadow: 0 0 20px rgba(236, 223, 165, 0.8);
+}
+
+@media (max-width: 1000px) {
+    .staff-img-wrapper img  {
+        height: clamp(350px, 50vw, 500px);
+    }
+}
+
+@media (max-width: 680px) {
+    .staff-img-wrapper img  {
+        height: clamp(350px, 73vw, 500px);
+    }
 }
 </style>

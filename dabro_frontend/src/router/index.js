@@ -31,7 +31,7 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-    if (to.meta.requiresAuth) {
+    if (to.meta?.requiresAuth) {
         try {
             await checkLoginAdmin()
             next()
@@ -47,8 +47,9 @@ router.beforeEach(async (to, from, next) => {
 router.afterEach(async () => {
     await nextTick()
 
-    requestAnimationFrame(() => {
+    requestAnimationFrame((to) => {
         const lenis = getLenis()
+        if (to.query?.scroll) return
         if (lenis) {
             lenis.scrollTo(0, {immediate: true})
         }

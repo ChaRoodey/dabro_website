@@ -1,6 +1,6 @@
 @import './base.css';
 
-:root{
+:root {
     --color-black: #000300;
     --color-light-gold: #ECDFA5;
     --color-gold: #E9D478;
@@ -21,14 +21,14 @@
     --transition-duratin: 0.2s;
 }
 
-body{
+body {
     font-family: var(--font-family-base), sans-serif;
     font-size: 16px;
     color: var(--color-light-gold);
     background-color: var(--color-black);
 }
 
-.appointment-btn{
+.appointment-btn {
     display: inline-flex;
     align-items: center;
     height: 55px;
@@ -59,7 +59,7 @@ button:active {
     transform: translateY(1%)
 }
 
-.phone-number{
+.phone-number {
     display: inline-flex;
     align-items: center;
     height: 55px;
@@ -70,83 +70,12 @@ button:active {
     padding-inline: 26px;
 }
 
-.appointment-btn:hover{
+.appointment-btn:hover {
     border: var(--border-hover);
 }
 
-
-@media (max-width: 1280px) {
-    .header{
-        flex-wrap: wrap;
-        row-gap: 10px;
-        padding-top: 20px;
-        padding-inline: 15px;
-    }
-
-    .header-menu{
-        order: 1;
-        flex-basis: 100%;
-    }
-
-    .header-menu-link{
-        height: 50px;
-    }
-
-    .phone-number{
-        padding-inline: 15px;
-    }
-
-    .banner {
-        padding: 50px 16px;
-    }
-
-    .about {
-        padding: 50px 16px;
-    }
-
-    .about-content {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .about-carousel {
-        order: 1;
-    }
-
-}
-
-@media (max-width: 1000px) {
-    .banner {
-        padding: 40px 16px;
-    }
-
-    .banner-inner {
-        flex-direction: column;
-    }
-
-    .banner-body {
-        text-align: center;
-    }
-
-    .banner-button.desktop {
-        display: none;
-    }
-
-    .banner-button.mobile {
-        display: flex;
-    }
-}
-
 @media (max-width: 680px) {
-    .header-logo{
-        padding-left: 25px;
-    }
-
-    .header-menu{
-        display: none;
-    }
-
-    .appointment{
+    .appointment {
         display: none;
     }
 
@@ -154,40 +83,31 @@ button:active {
         display: none;
     }
 
-    .header-burger-button{
-        display: inline-flex;
-    }
-
-    .header-line{
-        top: 90px;
-    }
-
-    .banner {
-        padding: 20px 12px;
-    }
-
-    .banner-button.mobile {
-        margin-top: 20px;
-        height: 50px;
-        padding-inline: 45px;
-        font-size: 16px;
-    }
-
-    .about-qualities-item {
-        flex-direction: column;
-    }
-
-    .about-qualities-title {
-        margin-bottom: 10px;
-    }
-
     .values {
         padding: 50px 16px;
     }
 }
 
-@media (max-width: 480px) {
-    .phone-number {
-        display: none;
-    }
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #c9a24a #1a1a1a;
+}
+
+/* Chrome, Edge, Safari */
+*::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+    background: var(--color-black);
+}
+
+*::-webkit-scrollbar-thumb {
+    background: var(--color-light-gold);
+    border-radius: 6px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: var(--color-gold);
 }

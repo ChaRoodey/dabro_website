@@ -20,15 +20,15 @@ const productStore = useProductsStore()
             </div>
             <div class="banner-photo">
                 <div class="banner-photo-frame">
-                    <img src="@/assets/img/photo_banner.png" alt="Banner Photo">
+                    <img src="@/assets/img/photo_banner_v2.jpg" alt="Banner Photo">
 
                     <span class="line line-top"></span>
                     <span class="line line-bottom"></span>
                 </div>
             </div>
-            <!--            <a class="banner-button mobile"-->
-            <!--               href="https://b921434.yclients.com/company/857497/select-master?o=s12564603">Записаться к-->
-            <!--                мастеру</a>-->
+            <button class="banner-button mobile" @click="productStore.openSidebar()">
+                Записаться к мастеру
+            </button>
         </div>
     </section>
 </template>
@@ -115,6 +115,7 @@ const productStore = useProductsStore()
     max-width: 440px;
     height: auto;
     z-index: 2;
+    filter: grayscale(100%);
 }
 
 .banner-photo-frame::before,
@@ -151,5 +152,52 @@ const productStore = useProductsStore()
 .banner-photo-frame .line-bottom {
     bottom: 5%;
     z-index: 3;
+}
+
+.banner-button.mobile {
+    display: none;
+    margin-top: 50px;
+    width: clamp(250px, 36.2vw, 362px);
+}
+
+@media (max-width: 1280px) {
+    .banner {
+        padding: 50px 16px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .banner {
+        padding: 40px 16px;
+    }
+
+    .banner-inner {
+        flex-direction: column;
+    }
+
+    .banner-body {
+        text-align: center;
+    }
+
+    .banner-button.desktop {
+        display: none;
+    }
+
+    .banner-button.mobile {
+        display: flex;
+    }
+}
+
+@media (max-width: 680px) {
+    .banner {
+        padding: 20px 12px;
+    }
+
+    .banner-button.mobile {
+        margin-top: 20px;
+        height: 50px;
+        padding-inline: 45px;
+        font-size: 16px;
+    }
 }
 </style>

@@ -34,19 +34,21 @@ onMounted(() => {
 <style scoped>
 .catalog-inner {
     max-width: 1200px;
+    padding: 0 30px;
 }
 
 .catalog-content {
     display: flex;
-    margin: min(60px, 4.6vw) 0;
+    margin: min(60px, 3.6vw) 0;
     justify-content: space-between;
 }
 
 h2 {
     font-family: var(--font-family-accent), Arial, sans-serif;
-    font-size: clamp(36px, 4.9vw, 64px);
+    font-size: clamp(36px, 4.9vw, 48px);
     font-weight: 700;
     margin-top: 40px;
+    margin-bottom: 0;
     letter-spacing: 3px;
 }
 
@@ -54,5 +56,11 @@ h3 {
     font-size: 20px;
     text-transform: none;
     margin-top: 10px;
+}
+
+@media (max-width: 1280px) {
+    .catalog-content {
+        justify-content: space-around;
+    }
 }
 </style>

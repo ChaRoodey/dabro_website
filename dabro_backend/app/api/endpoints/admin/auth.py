@@ -26,7 +26,7 @@ def _set_session_cookie(response: Response, token: str):
         httponly=True,
         secure=settings.SESSION_COOKIE_SECURE,
         samesite="lax",
-        max_age=settings.SESSION_TTL_HOURS * 360,
+        max_age=settings.SESSION_TTL_HOURS * 3600,
         domain=settings.SESSION_COOKIE_DOMAIN,
     )
 

@@ -4,13 +4,14 @@ from pydantic import BaseModel, Field
 
 
 class ProductAddSchema(BaseModel):
+    title: str
     excel_product_id: int
-    brand: str
-    category: str
-    description: str
+    brand: str | None
+    category: str | None
+    description: str | None
     cost: int = Field(ge=0)
-    size: str
-    img_url: str
+    size: str | None
+    img_url: str = None
     items_left: int = Field(ge=0)
 
 

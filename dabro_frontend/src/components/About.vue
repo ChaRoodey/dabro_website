@@ -8,27 +8,24 @@ import Carusel from "@/components/Carusel.vue";
         <div class="about-inner container">
             <h1>у нас</h1>
             <div class="about-content">
-
                 <div class="about-carousel">
                     <span class="line top"></span>
                     <span class="line bottom"></span>
                     <div class="about-carousel-inner">
                         <Carusel>
-                            <div><img src="@/assets/img/about_1.png" alt=""></div>
-                            <div><img src="@/assets/img/about_2.png" alt=""></div>
-                            <div><img src="@/assets/img/about_3.png" alt=""></div>
-                            <div><img src="@/assets/img/about_4.png" alt=""></div>
+                            <div class="slide">
+                                <img src="@/assets/img/about_7.jpg" alt="">
+                            </div>
+                            <div class="slide">
+                                <img src="@/assets/img/about_5.jpg" alt="">
+                            </div>
+                            <div class="slide">
+                                <img src="@/assets/img/about_6.jpg" alt="">
+                            </div>
+                            <div class="slide">
+                                <img src="@/assets/img/about_8.jpg" alt="">
+                            </div>
                         </Carusel>
-                        <!--                        <div-->
-                        <!--                                class="about-carousel-track"-->
-                        <!--                                :style="{ transform: `translateX(-${index * slideWidth}px)` }"-->
-                        <!--                            <img src="@/assets/img/about_1.png" alt="" class="about-carousel-img">-->
-                        <!--                            <img src="@/assets/img/about_2.png" alt="" class="about-carousel-img">-->
-                        <!--                            <img src="@/assets/img/about_3.png" alt="" class="about-carousel-img">-->
-                        <!--                            <img src="@/assets/img/about_4.png" alt="" class="about-carousel-img">-->
-                        <!--                        </div>-->
-                        <!--                            <button class="about-carousel-prev" @click="prevPhoto">&#10094;</button>-->
-                        <!--                            <button class="about-carousel-next" @click="nextPhoto">&#10095;</button>-->
                     </div>
                 </div>
                 <div class="about-qualities">
@@ -74,6 +71,17 @@ import Carusel from "@/components/Carusel.vue";
 </template>
 
 <style scoped>
+.slide {
+    height: 600px;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
 .about {
     min-height: 800px;
     width: 100%;
@@ -114,6 +122,13 @@ import Carusel from "@/components/Carusel.vue";
     position: relative;
     overflow: hidden;
     z-index: 2;
+}
+
+.about-carousel-inner img {
+    filter: grayscale(100%);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .about-carousel::before,
@@ -219,5 +234,30 @@ import Carusel from "@/components/Carusel.vue";
     font-family: var(--font-family-base), Arial, sans-serif;
     font-size: clamp(16px, 2.3vw, 24px);
     font-weight: 400;
+}
+
+@media (max-width: 1280px) {
+    .about {
+        padding: 50px 16px;
+    }
+
+    .about-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .about-carousel {
+        order: 1;
+    }
+}
+
+@media (max-width: 680px) {
+    .about-qualities-item {
+        flex-direction: column;
+    }
+
+    .about-qualities-title {
+        margin-bottom: 10px;
+    }
 }
 </style>
