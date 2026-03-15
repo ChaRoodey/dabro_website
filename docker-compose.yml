@@ -30,8 +30,6 @@ services:
         condition: service_healthy
     expose:
       - "8000"
-#    ports:
-#      - "8000:8000"
     networks:
       - dabro_net
     restart: unless-stopped
@@ -49,7 +47,10 @@ services:
       - prometheus
     ports:
       - "80:80"
-    #      - "443:443"
+      - "443:443"
+    volumes:
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
     networks:
       - dabro_net
     restart: unless-stopped
@@ -124,6 +125,13 @@ services:
     networks:
       - dabro_net
     restart: unless-stopped
+
+certbot:
+  image: certbot/certbot
+  container_name: dabro_certbot
+  volumes:
+    - ./certbot/www:/var/www/certbot
+    - ./certbot/conf:/etc/letsencrypt
 
 volumes:
   postgres_data:
