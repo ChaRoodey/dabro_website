@@ -4,13 +4,16 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file='.env-dev', extra='ignore')
+    model_config = SettingsConfigDict(env_file='.env.prod', extra='ignore')
 
     POSTGRES_HOST: str = 'localhost'
     POSTGRES_PORT: int = 5532
     POSTGRES_DB: str = 'dabro_db'
     POSTGRES_USER: str = 'dabro_user'
     POSTGRES_PASSWORD: str
+
+    INITIAL_ADMIN_USERNAME: str = 'admin'
+    INITIAL_ADMIN_PASSWORD: str
 
     SESSION_TTL_HOURS: int = 12
     SESSION_COOKIE_NAME: str = "session_id"

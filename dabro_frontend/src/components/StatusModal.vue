@@ -3,14 +3,16 @@ import {computed} from "vue";
 import {useProductsStore} from "@/stores/products.js";
 
 
+const props = defineProps({
+    errorMessage: String,
+    successMessage: String,
+})
+
 const productStore = useProductsStore()
 
-const errorMessage = productStore.adminError
-const successMessage = productStore.adminSuccess
-
-const isError = computed(() => !!errorMessage)
-const isSuccess = computed(() => !!successMessage)
-const message = computed(() => errorMessage || successMessage)
+const isError = computed(() => !!props.errorMessage)
+const isSuccess = computed(() => !!props.successMessage)
+const message = computed(() => props.errorMessage || props.successMessage)
 
 const icon = computed(() => {
     if (isError.value) return '⚠'

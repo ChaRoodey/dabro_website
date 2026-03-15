@@ -3,13 +3,13 @@ services:
     image: postgres:16-alpine
     container_name: dabro_postgres
     environment:
-      POSTGRES_DB: dabro_db
-      POSTGRES_USER: dabro_user
-      POSTGRES_PASSWORD: qWe4Rt6Y
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U dabro_user -d dabro_db" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -24,12 +24,14 @@ services:
       dockerfile: Dockerfile
     container_name: dabro_backend
     env_file:
-      - ./dabro_backend/.env
+      - dabro_backend/.env.prod
     depends_on:
       postgres:
         condition: service_healthy
     expose:
       - "8000"
+#    ports:
+#      - "8000:8000"
     networks:
       - dabro_net
     restart: unless-stopped
@@ -38,6 +40,8 @@ services:
     build:
       context: .
       dockerfile: nginx/Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_BASE_URL}
     container_name: dabro_nginx
     depends_on:
       - backend
@@ -45,9 +49,7 @@ services:
       - prometheus
     ports:
       - "80:80"
-      - "8000:8000"
-      - "3000:3000"
-      - "9090:9090"
+    #      - "443:443"
     networks:
       - dabro_net
     restart: unless-stopped
@@ -115,8 +117,10 @@ services:
     depends_on:
       - prometheus
       - loki
-    expose:
-      - "3000"
+    ports:
+      - "3000:3000"
+    #    expose:
+    #      - "3000"
     networks:
       - dabro_net
     restart: unless-stopped

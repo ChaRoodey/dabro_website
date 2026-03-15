@@ -513,6 +513,8 @@ onMounted(() => {
         />
         <StatusModal
                 v-if="productStore.adminError || productStore.adminSuccess"
+                :errorMessage="productStore.adminError"
+                :successMessage="productStore.adminSuccess"
         />
     </main>
 </template>

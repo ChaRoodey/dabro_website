@@ -12,7 +12,7 @@ wheels/
 
 #Env
 **/.env
-**/.env-dev
+dabro_backend/.env.dev
 
 # Frontend
 # Logs

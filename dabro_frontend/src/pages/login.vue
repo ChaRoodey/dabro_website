@@ -1,12 +1,13 @@
 <script setup>
-
 import {loginAdmin} from "@/api/apiGetters.js";
 import {ref} from "vue";
 import router from "@/router/index.js";
+import StatusModal from "@/components/StatusModal.vue";
 
 
 const username = ref('')
 const password = ref('')
+const errorMessage = ref('')
 
 async function login() {
     if (!username.value || !password.value) {
@@ -21,7 +22,7 @@ async function login() {
 
         await router.push('/admin')
     } catch (e) {
-        console.log(e.response?.data?.detail ?? "Ошибка авторизации");
+        errorMessage.value = e.response?.data?.detail || "Ошибка авторизации";
     }
 }
 </script>
@@ -41,6 +42,11 @@ async function login() {
             <button class="login-btn" type="submit">Войти</button>
         </form>
     </div>
+
+    <StatusModal
+            v-if="errorMessage"
+            :errorMessage="errorMessage"
+    />
 </template>
 
 <style scoped>
@@ -53,8 +59,8 @@ async function login() {
 }
 
 .login-block {
-    width: clamp(200px, 38.46vw, 500px);
-    height: clamp(100px, 30.76vw, 400px);
+    width: 500px;
+    height: 400px;
     border: 1px solid var(--color-gold);
     border-radius: 3px;
     display: flex;

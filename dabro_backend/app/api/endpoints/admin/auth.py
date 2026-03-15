@@ -7,7 +7,7 @@ from app.core.config import settings
 from app.core.logging import get_logger
 from app.core.security import security
 from app.core.session import create_session, delete_session
-from app.db.session import get_db_session, get_transactional_session
+from app.db.session import get_transactional_session
 from app.models.session_model import SessionModel
 from app.models.user_model import UserModel
 from app.schemas.admin import LoginSchema
@@ -47,11 +47,11 @@ async def login(
 
     if not user:
         logger.warning("Login failed: user not found username=%s", data.username)
-        raise HTTPException(status_code=401, detail="User not found")
+        raise HTTPException(status_code=401, detail="Неправильный логин или пароль")
 
     if not security.verify_password(data.password, user.password_hash):
         logger.warning("Login failed: wrong password username=%s", data.username)
-        raise HTTPException(status_code=401, detail="Wrong Password")
+        raise HTTPException(status_code=401, detail="Неправильный логин или пароль")
 
     session_obj = await create_session(user.user_id, session)
 
@@ -82,11 +82,11 @@ async def check_login(_=Depends(require_auth)) -> dict:
     return {"success": True}
 
 
-@router.post("/registration")
-async def registration(
-        data: LoginSchema,
-        session: AsyncSession = Depends(get_transactional_session)
-) -> dict:
-    new_user = UserModel(username=data.username, password_hash=security.hash_password(data.password))
-    session.add(new_user)
-    return {"success": True}
+# @router.post("/registration")
+# async def registration(
+#         data: LoginSchema,
+#         session: AsyncSession = Depends(get_transactional_session)
+# ) -> dict:
+#     new_user = UserModel(username=data.username, password_hash=security.hash_password(data.password))
+#     session.add(new_user)
+#     return {"success": True}
