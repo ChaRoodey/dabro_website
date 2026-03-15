@@ -126,12 +126,12 @@ services:
       - dabro_net
     restart: unless-stopped
 
-certbot:
-  image: certbot/certbot
-  container_name: dabro_certbot
-  volumes:
-    - ./certbot/www:/var/www/certbot
-    - ./certbot/conf:/etc/letsencrypt
+  certbot:
+    image: certbot/certbot
+    container_name: dabro_certbot
+    volumes:
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
 
 volumes:
   postgres_data:
