@@ -249,9 +249,17 @@ import Carusel from "@/components/Carusel.vue";
     .about-carousel {
         order: 1;
     }
+
+    .about {
+        padding: 70px 32px;
+    }
 }
 
 @media (max-width: 680px) {
+    .about {
+        padding: 30px 18px;
+    }
+
     .about-qualities-item {
         flex-direction: column;
     }
@@ -259,5 +267,10 @@ import Carusel from "@/components/Carusel.vue";
     .about-qualities-title {
         margin-bottom: 10px;
     }
+
+    .about-qualities-description {
+        width: 300px;
+    }
+
 }
 </style>

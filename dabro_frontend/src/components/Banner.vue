@@ -62,14 +62,14 @@ const productStore = useProductsStore()
 .banner-body h1,
 .banner-body h2 {
     font-family: var(--font-family-accent), Arial, sans-serif;
-    font-size: clamp(36px, 3.4vw, 64px);
+    font-size: clamp(24px, 1.53vw, 64px);
     font-weight: 700;
     margin: 10px 0;
     letter-spacing: 3px;
 }
 
 .banner-body h3 {
-    font-size: 20px;
+    font-size: clamp(16px, 3.4vw, 20px);
     text-align: right;
     text-transform: none;
     margin: 10px 10px;

@@ -57,3 +57,4 @@ __screenshots__/
 
 .idea/
 .vscode/
+/dabro_backend/.env.prod

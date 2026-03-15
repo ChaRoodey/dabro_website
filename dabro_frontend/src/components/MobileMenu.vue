@@ -27,6 +27,12 @@ function closeSidebar() {
                 </ul>
             </nav>
             <div class="menu-actions">
+                <div class="menu-buttons">
+                    <button @click="productStore.openSidebar()" class="menu-button menu-appointment-button">Онлайн
+                        запись
+                    </button>
+                    <a href="tel:+79126422020" class="menu-button menu-phone-button">Запись по звонку</a>
+                </div>
                 <div class="menu-socials">
                     <a href="https://www.instagram.com/dabro_sun/">
                         <svg width="60" height="60">
@@ -43,12 +49,6 @@ function closeSidebar() {
                             <use href="#icon-vk"/>
                         </svg>
                     </a>
-                </div>
-                <div class="menu-buttons">
-                    <button @click="productStore.openSidebar()" class="menu-button menu-appointment-button">Онлайн
-                        запись
-                    </button>
-                    <a href="tel:+79126422020" class="menu-button menu-phone-button">Запись по звонку</a>
                 </div>
             </div>
         </aside>
@@ -77,7 +77,7 @@ function closeSidebar() {
     transition: transform 0.3s ease;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     z-index: 4;
 }
@@ -99,16 +99,23 @@ function closeSidebar() {
 .mobile-menu-list {
     display: flex;
     flex-direction: column;
-    row-gap: 15px;
+    gap: 35px;
     color: var(--color-gold);
+    font-size: 24px;
+}
+
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .menu-button {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 185px;
-    height: 60px;
+    width: 200px;
+    height: 70px;
 }
 
 .menu-appointment-button {

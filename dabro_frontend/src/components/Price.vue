@@ -70,6 +70,14 @@ const priceList = [
     padding: 0 40px;
 }
 
+.price-inner h1 {
+    font-family: var(--font-family-accent), Arial, sans-serif;
+    font-weight: 700;
+    font-size: clamp(24px, 4.56vw, 60px);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
 .price-list {
     column-count: 2;
     column-gap: 40px;

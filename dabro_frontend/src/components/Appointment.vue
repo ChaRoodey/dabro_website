@@ -94,6 +94,10 @@ const productStore = useProductsStore()
         flex-direction: column;
         align-items: center;
     }
+
+    .appointment-inner {
+        padding: 0 25px;
+    }
 }
 
 </style>

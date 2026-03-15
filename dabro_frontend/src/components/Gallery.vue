@@ -154,4 +154,10 @@
 .gallery-line-bottom-row.bottom {
     top: 30%;
 }
+
+@media (max-width: 680px) {
+    .gallery {
+        display: none;
+    }
+}
 </style>
