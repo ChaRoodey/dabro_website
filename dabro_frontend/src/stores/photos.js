@@ -16,7 +16,6 @@ export const usePhotosStore = defineStore('photos', () => {
                 .map(({id, file}) => ({id, file}))
 
             if (currPayloadPhotos.length === 0) return
-            // console.log(currPayloadPhotos);
 
             const formData = new FormData()
 

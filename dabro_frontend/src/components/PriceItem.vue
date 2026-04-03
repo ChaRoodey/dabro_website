@@ -7,11 +7,13 @@ defineProps({
 <template>
     <div class="price-item-wrapper">
         <div class="price-inline-wrapper">
-            <h2>{{item.title}}</h2>
-            <h4>{{item.price}}</h4>
+            <h2 v-html="item.title"></h2>
+            <div class="price-inline">
+                <h4 v-html="item.price"></h4>
+            </div>
         </div>
         <span class="line"></span>
-        <p class="price-descr">{{item.descr}}</p>
+        <p class="price-descr">{{ item.descr }}</p>
     </div>
 </template>
 
@@ -46,5 +48,16 @@ h2, h4 {
 p {
     font-size: clamp(10px, 1.23vw, 16px);
     font-weight: 400;
+}
+
+@media (max-width: 768px) {
+    .price-inline-wrapper {
+        flex-direction: column;
+    }
+
+    .price-inline {
+        display: inline-flex;
+        justify-content: end;
+    }
 }
 </style>

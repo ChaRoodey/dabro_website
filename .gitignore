@@ -13,6 +13,8 @@ wheels/
 #Env
 **/.env
 dabro_backend/.env.dev
+dabro_backend/.env.s3.selectel
+dabro_backend/.env.prod
 
 # Frontend
 # Logs

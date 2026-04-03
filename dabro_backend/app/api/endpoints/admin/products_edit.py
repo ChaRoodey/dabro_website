@@ -9,6 +9,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import op_context
+from app.core.config import settings
 from app.core.image_convert import convert_to_webp
 from app.core.logging import get_logger
 from app.core.s3client import s3_client
@@ -192,7 +193,7 @@ async def update_products_with_excel(
 
 
 @router.post('/upload-photos')
-async def upload_product_photos(
+async def upload_photos(
         files: list[UploadFile] = File(...),
         meta: str = Form(...),
         s3_session: AioBaseClient = Depends(s3_client.get_client)
@@ -254,7 +255,7 @@ async def upload_product_photos(
 
         uploaded_files.append({
             'id': item.id,
-            'img_url': f'https://95d33001-e90b-4eee-a5ae-bf819f211dd7.selstorage.ru/{image_name}',
+            'img_url': f'{settings.S3_GET_URL}{image_name}',
         })
 
     logger.debug("Successfully added %s photos: %s", len(uploaded_files), uploaded_files)

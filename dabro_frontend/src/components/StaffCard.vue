@@ -20,9 +20,11 @@ const productStore = useProductsStore()
                 <p>{{ props.staffInfo?.description }}</p>
             </div>
         </div>
-        <h2>{{ props.staffInfo?.name }}</h2>
-        <h3>{{ props.staffInfo?.grade }}</h3>
-        <button @click="productStore.openSidebar()">Записаться</button>
+        <div class="staff-content-wrapper">
+            <h2>{{ props.staffInfo?.name }}</h2>
+            <h3>{{ props.staffInfo?.grade }}</h3>
+            <button @click="productStore.openSidebar()">Записаться</button>
+        </div>
     </div>
 </template>
 
@@ -50,6 +52,10 @@ const productStore = useProductsStore()
     transform: translateY(20%);
     transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
     padding: 30px;
+}
+
+.staff-content-wrapper {
+    padding: 0 15px;
 }
 
 .staff-img-wrapper img {
@@ -110,13 +116,13 @@ const productStore = useProductsStore()
 }
 
 @media (max-width: 1000px) {
-    .staff-img-wrapper img  {
+    .staff-img-wrapper img {
         height: clamp(350px, 50vw, 500px);
     }
 }
 
 @media (max-width: 680px) {
-    .staff-img-wrapper img  {
+    .staff-img-wrapper img {
         height: clamp(350px, 73vw, 500px);
     }
 }

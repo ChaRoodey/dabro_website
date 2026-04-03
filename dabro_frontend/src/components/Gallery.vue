@@ -50,6 +50,7 @@
 .gallery-inner h1 {
     font-family: var(--font-family-accent), Arial, sans-serif;
     font-size: clamp(24px, 4.56vw, 60px);
+    font-weight: 700;
 }
 
 .gallery-grid {

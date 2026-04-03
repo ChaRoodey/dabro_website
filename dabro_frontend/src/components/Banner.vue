@@ -35,7 +35,7 @@ const productStore = useProductsStore()
 
 <style scoped>
 .banner {
-    min-height: 800px;
+    //min-height: 800px;
     width: 100%;
     padding: 100px 32px;
 }
@@ -77,7 +77,7 @@ const productStore = useProductsStore()
 
 .banner-body img {
     height: auto;
-    width: clamp(200px, 17.6vw, 338px);
+    width: clamp(130px, 17.6vw, 338px);
     padding-top: 5px;
     box-sizing: content-box;
     object-fit: contain;
@@ -111,7 +111,7 @@ const productStore = useProductsStore()
 .banner-photo-frame img {
     position: relative;
     display: block;
-    width: clamp(300px, 35.2vw, 440px);
+    width: clamp(200px, 35.2vw, 440px);
     max-width: 440px;
     height: auto;
     z-index: 2;
@@ -198,6 +198,11 @@ const productStore = useProductsStore()
         height: 50px;
         padding-inline: 45px;
         font-size: 16px;
+    }
+
+    .banner-body h2,
+    .banner-body h3 {
+        margin: 5px 10px;
     }
 }
 </style>

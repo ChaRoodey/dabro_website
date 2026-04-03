@@ -73,29 +73,29 @@ export const useProductsStore = defineStore('products', () => {
     const photosStore = usePhotosStore();
 
     function getApiErrorMessage(e) {
-    console.log('API error:', e)
+        console.log('API error:', e)
 
-    if (
-        e.code === 'ECONNABORTED' ||
-        e.code === 'ERR_NETWORK' ||
-        e.message === 'Network Error' ||
-        !e.response
-    ) {
-        return 'Сервер недоступен, попробуйте позже'
+        if (
+            e.code === 'ECONNABORTED' ||
+            e.code === 'ERR_NETWORK' ||
+            e.message === 'Network Error' ||
+            !e.response
+        ) {
+            return 'Сервер недоступен, попробуйте позже'
+        }
+
+        const detail = e.response?.data?.detail
+
+        if (typeof detail === 'string') {
+            return detail
+        }
+
+        if (typeof detail === 'object' && detail?.message) {
+            return detail.message
+        }
+
+        return 'Произошла ошибка'
     }
-
-    const detail = e.response?.data?.detail
-
-    if (typeof detail === 'string') {
-        return detail
-    }
-
-    if (typeof detail === 'object' && detail?.message) {
-        return detail.message
-    }
-
-    return 'Произошла ошибка'
-}
 
     function openSidebar() {
         sidebarOpen.value = true
@@ -170,7 +170,7 @@ export const useProductsStore = defineStore('products', () => {
         productsLoading.value = true
         try {
             const res = await fetchFilteredData(filters);
-            allProducts.value = res.data;
+            allProducts.value = res.data.sort((a, b) => b.items_left - a.items_left);
         } catch (e) {
             if (e.response?.status === 422) {
                 validationErrors.value = e.response.data.detail

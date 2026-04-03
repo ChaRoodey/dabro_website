@@ -6,8 +6,7 @@ from app.core.config import settings
 
 def setup_logger() -> None:
     logger = logging.getLogger()
-    logger.setLevel(settings.LOG_LEVEL_DEFAULT or logging.INFO)
-    # logger.setLevel(logging.DEBUG)
+    logger.setLevel(settings.LOG_LEVEL or logging.INFO)
 
     handler = logging.StreamHandler(sys.stdout)
     formatter = logging.Formatter(

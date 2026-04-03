@@ -55,7 +55,7 @@ const productStore = useProductsStore()
     font-family: var(--font-family-base), Arial, sans-serif;
     font-size: clamp(16px, 2.56vw, 20px);
     font-weight: 400;
-    width: 360px;
+    width: min(360px, 70%);
     height: 60px;
     border-radius: 3%;
     border: 1px solid var(--color-black);
@@ -88,6 +88,7 @@ const productStore = useProductsStore()
         display: flex;
         flex-direction: column;
         align-items: center;
+        text-align: center;
     }
 
     .appointment-content {

@@ -9,13 +9,13 @@ const productStore = useProductsStore()
 
 function closeSidebar() {
     productStore.closeSidebar()
-    isFrameLoaded.value = false
+    // isFrameLoaded.value = false
 }
 </script>
 
 <template>
     <transition name="overlay-fade">
-        <div class="sidebar-overlay" v-if="productStore.sidebarOpen" @click.self="closeSidebar">
+        <div class="sidebar-overlay" v-show="productStore.sidebarOpen" @click.self="closeSidebar">
             <transition name="sidebar-spring">
                 <aside class="sidebar">
                     <button class="close" @click="closeSidebar">✕</button>
@@ -167,6 +167,12 @@ function closeSidebar() {
     .sidebar-spring-leave-active,
     .frame {
         transition: none;
+    }
+}
+
+@media (max-width: 680px) {
+    .sidebar {
+        width: 80%;
     }
 }
 </style>

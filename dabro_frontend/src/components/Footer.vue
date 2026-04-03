@@ -61,6 +61,55 @@ onBeforeUnmount(() => {
                 <div id="map" style="width: 100%; height: 330px;"></div>
             </div>
         </div>
+
+        <div class="footer-inner-mobile container">
+            <div class="footer-title">
+                <h1>контакты</h1>
+            </div>
+            <div class="contacts-inline">
+                <div class="footer-contacts">
+                    <div class="footer-address">
+                        <h4>Адрес</h4>
+                        <p>г. Екатеринбург, мкр. Солнечный<br>ул. Лучистая 6</p>
+                    </div>
+                    <div class="footer-phone-number">
+                        <h4>Телефон</h4>
+                        <a href="">8 912 642 20 20</a>
+                    </div>
+                    <div class="footer-working-hours">
+                        <h4>Режим работы</h4>
+                        <p>10:00–21:00</p>
+                    </div>
+                    <div class="footer-social-media">
+                        <h4>Социальные сети</h4>
+                        <div class="footer-social-media-links">
+                            <a href="https://vk.com/dabro_sun">
+                                <svg width="60" height="60">
+                                    <use href="#icon-vk"/>
+                                </svg>
+                            </a>
+                            <a href="https://www.instagram.com/dabro_sun/">
+                                <svg width="60" height="60">
+                                    <use href="#icon-instagram"/>
+                                </svg>
+                            </a>
+                            <a href="https://t.me/dabro_sun">
+                                <svg width="60" height="60">
+                                    <use href="#icon-telegram"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!--                <div class="footer-logo-mobile">-->
+                <!--                    <img class="mobile-footer-logo" src="@/assets/img/logo_vertical.svg" alt="ДаБро логотип">-->
+                <!--                </div>-->
+            </div>
+            <div class="footer-map">
+                <div id="mobile-map" style="width: 100%; height: 230px;"></div>
+            </div>
+        </div>
+
         <div class="footer-copyright">
             <p>© Copyright 2025-2026</p>
         </div>
@@ -117,7 +166,7 @@ onBeforeUnmount(() => {
 .footer-map {
     width: 100%;
     max-width: 550px;
-    height: 330px;
+    //height: 330px;
 }
 
 .footer-social-media {
@@ -130,6 +179,19 @@ onBeforeUnmount(() => {
     font-family: var(--font-family-base), Arial, sans-serif;
     font-size: clamp(12px, 1.56vw, 16px);
     color: var(--color-light-gold);
+}
+
+.footer-inner-mobile {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+.contacts-inline {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 10px;
 }
 
 @media (max-width: 680px) {
@@ -149,6 +211,38 @@ onBeforeUnmount(() => {
     .footer-social-media-links {
         display: flex;
         justify-content: space-around;
+    }
+}
+
+@media (max-width: 600px) {
+    .footer {
+        min-height: 0;
+        padding: 50px 16px 0;
+    }
+
+    .footer-title {
+        margin-bottom: 20px;
+    }
+
+    .footer-inner {
+        display: none;
+    }
+
+    .footer-inner-mobile {
+        display: flex;
+    }
+
+    .footer-contacts {
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-social-media {
+        padding: 0;
+    }
+
+    .footer-copyright {
+        margin-top: 10px;
     }
 }
 </style>

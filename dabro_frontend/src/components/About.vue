@@ -114,7 +114,7 @@ import Carusel from "@/components/Carusel.vue";
 
 .about-carousel {
     position: relative;
-    width: clamp(300px, 26vw, 440px);
+    width: clamp(280px, 26vw, 440px);
     height: auto;
 }
 
@@ -271,6 +271,5 @@ import Carusel from "@/components/Carusel.vue";
     .about-qualities-description {
         width: 300px;
     }
-
 }
 </style>

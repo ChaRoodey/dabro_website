@@ -86,18 +86,18 @@ onUnmounted(() => {
 
 .modal-content h2 {
     margin-bottom: 5px;
-    font-size: 32px;
+    font-size: clamp(18px, 2.5vw, 32px);
     color: var(--color-gold);
 }
 
 .modal-content h3 {
     margin-bottom: 10px;
-    font-size: 24px;
+    font-size: clamp(16px, 2.5vw, 24px);
     color: var(--color-gold);
 }
 
 .item-p {
-    font-size: clamp(10px, 2.5vw, 24px);
+    font-size: clamp(16px, 2.5vw, 24px);
     font-weight: 400;
 }
 
@@ -157,7 +157,13 @@ onUnmounted(() => {
     }
 
     .modal-window img {
-        width: 30%;
+        width: 70%;
+    }
+}
+
+@media (max-width: 680px) {
+    .modal-window {
+        flex-direction: column;
     }
 }
 

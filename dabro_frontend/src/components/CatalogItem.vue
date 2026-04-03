@@ -77,7 +77,7 @@ function openModal() {
 }
 
 .item-p {
-    font-size: clamp(10px, 1.23vw, 16px);
+    font-size: 16px;
     font-weight: 400;
 }
 
@@ -91,7 +91,7 @@ function openModal() {
 @media (max-width: 1280px) {
     .item-wrapper {
         width: 230px;
-        height: 300px;
+        padding: 10px;
     }
 
     .item-wrapper img {

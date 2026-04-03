@@ -1,9 +1,13 @@
-
-
-let myMap;
+let desktopMap, mobileMap;
 
 export function mapInit() {
-    myMap = new ymaps.Map("map", {
+    desktopMap = new ymaps.Map("map", {
+        center: [56.743450, 60.565472],
+        zoom: 17,
+        controls: ['zoomControl', 'geolocationControl']
+    });
+
+    mobileMap = new ymaps.Map("mobile-map", {
         center: [56.743450, 60.565472],
         zoom: 17,
         controls: ['zoomControl', 'geolocationControl']
@@ -17,10 +21,14 @@ export function mapInit() {
         iconColor: '#E9D478'
     });
 
-    myMap.geoObjects.add(myPlacemark);
+    desktopMap.geoObjects.add(myPlacemark);
+    mobileMap.geoObjects.add(myPlacemark);
 }
 
 export function mapDestroy() {
-    myMap?.destroy();
-    myMap = null;
+    desktopMap?.destroy();
+    desktopMap = null;
+
+    mobileMap?.destroy();
+    mobileMap = null;
 }

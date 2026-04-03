@@ -20,7 +20,12 @@ async def lifespan(app: FastAPI):
     logger.info("App stopped")
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(
+    lifespan=lifespan,
+    docs_url='/docs' if settings.LOG_LEVEL == 'DEBUG' else None,
+    redoc_url='/redoc' if settings.LOG_LEVEL == 'DEBUG' else None,
+    openapi_url='/openapi.json' if settings.LOG_LEVEL == 'DEBUG' else None,
+)
 
 Instrumentator(excluded_handlers=["/metrics"], ).instrument(app).expose(app, endpoint="/metrics")
 app.include_router(router)
