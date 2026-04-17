@@ -25,6 +25,7 @@ class ProductDeleteSchema(BaseModel):
 
 class ProductPatchSchema(ProductDeleteSchema):
     excel_product_id: Optional[int] = None
+    title: Optional[str] = None
     brand: Optional[str] = None
     category: Optional[str] = None
     description: Optional[str] = None

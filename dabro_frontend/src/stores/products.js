@@ -20,7 +20,8 @@ const PRODUCT_PATCH_FIELDS = [
     "img_url",
     "excel_product_id",
     "cost",
-    "items_left"
+    "items_left",
+    "title",
 ];
 
 function toAddProductPayload(p) {
@@ -33,6 +34,7 @@ function toAddProductPayload(p) {
         excel_product_id: p.excel_product_id,
         cost: p.cost,
         items_left: p.items_left,
+        title: p.title,
     };
 }
 
@@ -41,6 +43,8 @@ function toPatchProductPayload(oldData, newData) {
 
     for (const field of PRODUCT_PATCH_FIELDS) {
         if (oldData[field] !== newData[field]) {
+            console.log(field, oldData, newData);
+            // console.log(patch[field], newData[field]);
             patch[field] = newData[field];
         }
     }
@@ -137,11 +141,12 @@ export const useProductsStore = defineStore('products', () => {
             const map = new Map()
             for (const item of res.data) {
                 map.set(item.product_id, {
-                    brand: item.brand ?? "",
-                    description: item.description ?? "",
-                    size: item.size ?? "",
-                    category: item.category ?? "",
-                    img_url: item.img_url ?? "",
+                    brand: item.brand ?? null,
+                    title: item.title ?? null,
+                    description: item.description ?? null,
+                    size: item.size ?? null,
+                    category: item.category ?? null,
+                    img_url: item.img_url ?? null,
                     excel_product_id: item.excel_product_id ?? null,
                     cost: item.cost ?? null,
                     items_left: item.items_left ?? null,
