@@ -68,18 +68,19 @@ export const useStaffStore = defineStore('staff', () => {
 
         try {
             const updatedPhotos = await photosStore.uploadPhotos('staff')
-            if (!updatedPhotos) return;
 
-            const updatedPhotosMap = new Map(
-                updatedPhotos.map(item => [item.id, item.img_url])
-            )
+            if (updatedPhotos) {
+                const updatedPhotosMap = new Map(
+                    updatedPhotos.map(item => [item.id, item.img_url])
+                )
 
-            allStaff.value.forEach(staff => {
-                const newUrl = updatedPhotosMap.get(staff.staff_id)
-                if (newUrl) {
-                    staff.img_url = newUrl
-                }
-            })
+                allStaff.value.forEach(staff => {
+                    const newUrl = updatedPhotosMap.get(staff.staff_id)
+                    if (newUrl) {
+                        staff.img_url = newUrl
+                    }
+                })
+            }
 
             const newItems = [];
             const changedItems = [];
@@ -95,6 +96,8 @@ export const useStaffStore = defineStore('staff', () => {
                 const patch = toPatchPayload(oldData, item)
                 if (patch) changedItems.push(patch)
             }
+
+            console.log(newItems);
 
             if (!newItems.length && !changedItems.length) return;
 

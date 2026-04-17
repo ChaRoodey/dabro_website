@@ -43,8 +43,6 @@ function toPatchProductPayload(oldData, newData) {
 
     for (const field of PRODUCT_PATCH_FIELDS) {
         if (oldData[field] !== newData[field]) {
-            console.log(field, oldData, newData);
-            // console.log(patch[field], newData[field]);
             patch[field] = newData[field];
         }
     }

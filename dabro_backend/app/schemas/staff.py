@@ -7,7 +7,7 @@ class StaffAddSchema(BaseModel):
     name: str
     grade: str
     description: str
-    img_url: str # = Field(ge=0)
+    img_url: Optional[str] = None
 
 
 class StaffSchema(StaffAddSchema):

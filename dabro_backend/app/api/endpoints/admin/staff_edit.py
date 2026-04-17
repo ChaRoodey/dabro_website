@@ -28,7 +28,7 @@ async def add_staff(data: List[StaffAddSchema], session: AsyncSession = Depends(
 
 
 @router.patch("/change", dependencies=[Depends(op_context("staff.patch"))])
-async def add_staff(data: List[StaffPatchSchema], session: AsyncSession = Depends(get_transactional_session)):
+async def change_staff(data: List[StaffPatchSchema], session: AsyncSession = Depends(get_transactional_session)):
     ids = [item.staff_id for item in data]
 
     res = await session.execute(select(StaffModel).where(StaffModel.staff_id.in_(ids)))
