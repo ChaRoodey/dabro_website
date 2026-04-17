@@ -12,7 +12,7 @@ def convert_to_webp(file_bytes: bytes) -> bytes:
     if image.width > MAX_WIDTH or image.height > MAX_HEIGHT:
         raise ValueError("Image resolution too large")
 
-    image.thumbnail((400, 300))
+    image.thumbnail((400, 500))
 
     output = BytesIO()
     image.save(output, format='WEBP', quality=85)

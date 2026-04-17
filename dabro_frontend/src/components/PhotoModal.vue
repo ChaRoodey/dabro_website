@@ -16,8 +16,8 @@ const cropperRef = ref(null)
 const image = ref(null)
 const preview = ref(null)
 
-const STENCIL_WIDTH = 250
-const STENCIL_HEIGHT = 350
+const STENCIL_WIDTH = 380
+const STENCIL_HEIGHT = 500
 const ASPECT_RATIO = STENCIL_WIDTH / STENCIL_HEIGHT // 5 / 7
 
 function revokeIfBlobUrl(url) {
@@ -159,7 +159,7 @@ onBeforeUnmount(() => {
                 />
 
                 <div v-if="preview" class="preview-wrap">
-                    <p class="preview-label">250 × 350</p>
+                    <p class="preview-label">380 × 500</p>
                     <img :src="preview" class="preview" alt="Preview"/>
                 </div>
             </div>
