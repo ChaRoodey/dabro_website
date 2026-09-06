@@ -34,94 +34,33 @@ services:
       - dabro_net
     restart: unless-stopped
 
+  frontend:
+    build:
+      context: ./dabro_frontend_v2
+      dockerfile: Dockerfile
+    container_name: dabro_frontend
+    environment:
+      NUXT_PUBLIC_API_BASE_URL: ${NUXT_API_BASE_URL}
+      NUXT_PUBLIC_SITE_URL: ${NUXT_PUBLIC_SITE_URL}
+    ports:
+      - "3000:3000"
+    networks:
+      - dabro_net
+
   nginx:
     build:
       context: .
       dockerfile: nginx/Dockerfile
-      args:
-        VITE_API_URL: ${VITE_API_BASE_URL}
     container_name: dabro_nginx
     depends_on:
       - backend
-      - grafana
-      - prometheus
+      - frontend
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
-    networks:
-      - dabro_net
-    restart: unless-stopped
-
-  loki:
-    image: grafana/loki:3.1.0
-    container_name: dabro_loki
-    command: -config.file=/etc/loki/config.yml
-    volumes:
-      - ./loki-config.yml:/etc/loki/config.yml:ro
-      - loki_data:/loki
-    expose:
-      - "3100"
-    networks:
-      - dabro_net
-    restart: unless-stopped
-
-  alloy:
-    image: grafana/alloy:latest
-    container_name: dabro_alloy
-    command:
-      - run
-      - --server.http.listen-addr=0.0.0.0:12345
-      - --storage.path=/var/lib/alloy/data
-      - /etc/alloy/config.alloy
-    volumes:
-      - ./config.alloy:/etc/alloy/config.alloy:ro
-      - /var/run/docker.sock:/var/run/docker.sock
-      - alloy_data:/var/lib/alloy/data
-    depends_on:
-      - loki
-    expose:
-      - "12345"
-    networks:
-      - dabro_net
-    restart: unless-stopped
-
-  prometheus:
-    image: prom/prometheus:v2.54.1
-    container_name: dabro_prometheus
-    command:
-      - --config.file=/etc/prometheus/prometheus.yml
-      - --storage.tsdb.path=/prometheus
-    volumes:
-      - ./prometheus-config.yml:/etc/prometheus/prometheus.yml:ro
-      - prometheus_data:/prometheus
-    expose:
-      - "9090"
-    networks:
-      - dabro_net
-    restart: unless-stopped
-
-  grafana:
-    image: grafana/grafana:11.1.5
-    container_name: dabro_grafana
-    environment:
-      GF_SECURITY_ADMIN_USER: admin
-      GF_SECURITY_ADMIN_PASSWORD: 1qaz2wsx!
-      GF_USERS_ALLOW_SIGN_UP: "false"
-    volumes:
-      - grafana_data:/var/lib/grafana
-      - ./grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml:ro
-      - ./grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
-      - ./grafana/dashboard.json:/var/lib/grafana/dashboards/dashboard.json
-    depends_on:
-      - prometheus
-      - loki
-#    ports:
-#      - "3000:3000"
-    expose:
-      - "3000"
     networks:
       - dabro_net
     restart: unless-stopped
@@ -135,10 +74,6 @@ services:
 
 volumes:
   postgres_data:
-  loki_data:
-  alloy_data:
-  prometheus_data:
-  grafana_data:
 
 networks:
   dabro_net:

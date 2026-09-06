@@ -1,0 +1,145 @@
+@import './base.css';
+
+@font-face {
+    font-family: 'NotoSans';
+    src: url('/fonts/NotoSans-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NotoSans';
+    src: url('/fonts/NotoSans-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Brygada1918';
+    src: url('/fonts/Brygada1918-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Brygada1918';
+    src: url('/fonts/Brygada1918-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --color-black: #000300;
+    --color-light-gold: #ECDFA5;
+    --color-gold: #E9D478;
+    --color-gold-hover: #D7BD68;
+    --color-light-black: #111111;
+    --color-gold-socials: #EDDFA6;
+
+    --border-radius: 4px;
+    --border: 1px solid var(--color-light-gold);
+    --border-hover: 1px solid var(--color-gold-hover);
+
+    --font-family-base: NotoSans;
+    --font-family-accent: Brygada1918;
+
+    --conteiner-width: 1300px;
+    --conteiner-padding-x: 15px;
+
+    --transition-duratin: 0.2s;
+}
+
+body {
+    font-family: var(--font-family-base), sans-serif;
+    font-size: 16px;
+    color: var(--color-light-gold);
+    background-color: var(--color-black);
+}
+
+.appointment-btn {
+    display: inline-flex;
+    align-items: center;
+    height: 55px;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 2;
+    letter-spacing: 1.55px;
+    padding-inline: 26px;
+    border: var(--border);
+    border-radius: var(--border-radius);
+    background-color: transparent;
+    color: var(--color-light-gold);
+}
+
+a,
+button {
+    border: 0;
+    transition: 0.3s ease;
+}
+
+a:hover,
+button:hover {
+    transform: scale(1.01) translateY(-5%);
+}
+
+a:active,
+button:active {
+    transform: translateY(1%)
+}
+
+.phone-number {
+    display: inline-flex;
+    align-items: center;
+    height: 55px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 2;
+    letter-spacing: 1px;
+    padding-inline: 26px;
+}
+
+.appointment-btn:hover {
+    border: var(--border-hover);
+}
+
+@media (max-width: 680px) {
+    .appointment {
+        display: none;
+    }
+
+    .appointment-btn {
+        display: none;
+    }
+
+    .values {
+        padding: 50px 16px;
+    }
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #c9a24a #1a1a1a;
+}
+
+/* Chrome, Edge, Safari */
+*::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+    background: var(--color-black);
+}
+
+*::-webkit-scrollbar-thumb {
+    background: var(--color-light-gold);
+    border-radius: 6px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: var(--color-gold);
+}
