@@ -18,7 +18,7 @@ export const useSidebarStore = defineStore('booking', () => {
     }
 
     function openCertsSidebar() {
-        openSidebar('https://b921434.yclients.com/')
+        openSidebar('https://o18042.yclients.com/')
     }
 
 
