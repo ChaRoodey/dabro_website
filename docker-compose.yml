@@ -20,11 +20,11 @@ services:
 
   backend:
     build:
-      context: ./dabro_backend
+      context: backend
       dockerfile: Dockerfile
-    container_name: dabro_backend
+    container_name: backend
     env_file:
-      - dabro_backend/.env.prod
+      - backend/.env.prod
     depends_on:
       postgres:
         condition: service_healthy
@@ -36,9 +36,9 @@ services:
 
   frontend:
     build:
-      context: ./dabro_frontend_v2
+      context: frontend
       dockerfile: Dockerfile
-    container_name: dabro_frontend
+    container_name: frontend
     environment:
       NUXT_PUBLIC_API_BASE_URL: ${NUXT_API_BASE_URL}
       NUXT_PUBLIC_SITE_URL: ${NUXT_PUBLIC_SITE_URL}

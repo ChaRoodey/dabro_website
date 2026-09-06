@@ -20,11 +20,11 @@ services:
 
   backend:
     build:
-      context: ./dabro_backend
+      context: backend
       dockerfile: Dockerfile
-    container_name: dabro_backend
+    container_name: backend
     env_file:
-      - dabro_backend/.env.prod
+      - backend/.env.prod
     depends_on:
       postgres:
         condition: service_healthy

@@ -12,9 +12,9 @@ wheels/
 
 #Env
 **/.env
-dabro_backend/.env.dev
-dabro_backend/.env.s3.selectel
-dabro_backend/.env.prod
+backend/.env.dev
+backend/.env.s3.selectel
+backend/.env.prod
 
 # Frontend
 # Logs
@@ -59,4 +59,4 @@ __screenshots__/
 
 .idea/
 .vscode/
-/dabro_backend/.env.prod
+/backend/.env.prod
