@@ -7,6 +7,7 @@ export const usePhotosStore = defineStore('photos', () => {
         apiAddStaff,
         apiChangeStaff,
         apiDeleteStaff,
+        apiUploadPhotos,
     } = useApiGetters()
 
     function addNewPhoto(photo) {

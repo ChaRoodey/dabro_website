@@ -1,7 +1,9 @@
 <script setup>
 import {useSidebarStore} from "../stores/sidebar.js";
+import {useAuthStore} from "../stores/auth.js";
 const { goToSection } = useSectionNavigation()
 
+const authStore = useAuthStore()
 const sidebarStore = useSidebarStore()
 const route = useRoute()
 const router = useRouter()
@@ -28,6 +30,9 @@ const router = useRouter()
                     </li>
                     <li class="header-menu-item">
                         <a href="" @click.prevent="sidebarStore.openCertsSidebar" class="header-menu-link">Сертификаты</a>
+                    </li>
+                    <li class="header-menu-item" v-if="authStore.isAuthenticated">
+                        <a href="" @click.prevent="router.push('admin/')" class="header-menu-link">Админ панель</a>
                     </li>
                 </ul>
             </nav>

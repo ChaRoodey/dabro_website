@@ -20,6 +20,30 @@ useHead({
         },
     ],
 })
+
+function delay(ms = 250) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+async function scrollFromQuery() {
+    const route = useRoute()
+    const target = route.query.scroll
+    if (!target) return
+
+    await nextTick()
+    await delay(300)
+
+    const lenis = getLenis()
+    if (!lenis) return
+
+    await lenis.scrollTo(`#${target}`, {
+        offset: -200
+    })
+}
+
+onMounted(() => {
+    scrollFromQuery()
+})
 </script>
 
 <template>

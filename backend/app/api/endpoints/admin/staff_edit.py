@@ -1,9 +1,10 @@
+from pathlib import Path
 from typing import List
 from uuid import uuid4
 import json
 
 from aiobotocore.client import AioBaseClient
-from fastapi import Depends, APIRouter, HTTPException, UploadFile, File, Form, Path
+from fastapi import Depends, APIRouter, HTTPException, UploadFile, File, Form
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -85,6 +86,7 @@ async def delete_staff(data: StaffDeleteSchema, session: AsyncSession = Depends(
 
     await session.delete(staff)
     return {'status': 'ok'}
+
 
 @router.post('/upload-photos')
 async def upload_photos(
