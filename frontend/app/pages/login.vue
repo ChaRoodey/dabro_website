@@ -1,8 +1,14 @@
 <script setup>
 import {useApiGetters} from "../api/apiGetters.js";
+import {useAuthStore} from "../stores/auth.ts";
+
+definePageMeta({
+    middleware: ['guest'],
+})
 
 const router = useRouter()
 const {loginAdmin} = useApiGetters()
+const authStore = useAuthStore()
 
 const username = ref('')
 const password = ref('')
@@ -18,6 +24,8 @@ async function login() {
             'username': username.value,
             'password': password.value,
         })
+
+        authStore.login()
 
         await router.push('/admin')
     } catch (e) {

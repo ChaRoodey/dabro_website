@@ -11,6 +11,10 @@ const selectedPhoto = ref(null);
 const objectId = ref(null);
 const instance = ref(null);
 
+definePageMeta({
+    middleware: ['admin'],
+})
+
 function handleSelect(object, inst) {
     selectedPhoto.value = object.img_url
     objectId.value = object.product_id || object.staff_id
@@ -54,6 +58,7 @@ function addStaffRow() {
 function deleteStaffMember(staffId) {
     staffStore.deleteStaff(staffId)
 }
+
 
 onMounted(() => {
     staffStore.loadStaff()
