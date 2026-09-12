@@ -197,6 +197,7 @@ onMounted(() => {
     cursor: pointer;
     background: transparent;
     border: 1px solid var(--color-gold);
+    color: var(--color-light-gold);
 }
 
 .btn:hover {
