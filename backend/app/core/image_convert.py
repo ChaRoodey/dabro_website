@@ -2,8 +2,8 @@ from io import BytesIO
 
 from PIL import Image
 
-MAX_WIDTH = 4000
-MAX_HEIGHT = 4000
+MAX_WIDTH = 8000
+MAX_HEIGHT = 8000
 
 
 def convert_to_webp(file_bytes: bytes) -> bytes:

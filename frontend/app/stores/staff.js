@@ -127,8 +127,6 @@ export const useStaffStore = defineStore('staff', () => {
                 if (patch) changedItems.push(patch)
             }
 
-            console.log(newItems);
-
             if (!newItems.length && !changedItems.length) return;
 
             const results = await Promise.all([

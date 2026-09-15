@@ -15,32 +15,28 @@ export const usePhotosStore = defineStore('photos', () => {
     }
 
     async function uploadPhotos(instance) {
-        try {
-            const currPayloadPhotos = newPhotos.value
-                .filter(photo => photo.instance === instance)
-                .map(({id, file}) => ({id, file}))
+        const currPayloadPhotos = newPhotos.value
+            .filter(photo => photo.instance === instance)
+            .map(({id, file}) => ({id, file}))
 
-            if (currPayloadPhotos.length === 0) return
+        if (currPayloadPhotos.length === 0) return
 
-            const formData = new FormData()
+        const formData = new FormData()
 
-            const meta = currPayloadPhotos.map((item, index) => {
-                formData.append('files', item.file)
+        const meta = currPayloadPhotos.map((item, index) => {
+            formData.append('files', item.file)
 
-                return {
-                    id: item.id,
-                    index: index,
-                }
-            })
-            formData.append('meta', JSON.stringify(meta))
+            return {
+                id: item.id,
+                index: index,
+            }
+        })
+        formData.append('meta', JSON.stringify(meta))
 
-            const res = await apiUploadPhotos(formData)
+        const res = await apiUploadPhotos(formData)
 
-            newPhotos.value = newPhotos.value.filter(photo => photo.instance !== instance)
-            return res.data.files;
-        } catch (e) {
-            console.log(e);
-        }
+        newPhotos.value = newPhotos.value.filter(photo => photo.instance !== instance)
+        return res.data.files;
     }
 
     return {
